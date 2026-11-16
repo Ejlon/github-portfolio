@@ -2,6 +2,8 @@
 
 A static portfolio site (plain HTML, CSS and JavaScript, no build step), ready to deploy on Vercel.
 
+**Live site:** https://portfolio-ejlon.vercel.app/
+
 ## Files
 
 ```
@@ -34,7 +36,8 @@ Double-click `index.html`, or in VS Code use the Live Server extension.
 
 1. Push this folder to a GitHub repository.
 2. On vercel.com, import the repository. Framework preset: **Other**. Leave build settings empty.
-3. Click **Deploy**.
+3. Name the project `portfolio-ejlon` so the site is served at https://portfolio-ejlon.vercel.app/ (or rename it later under Project Settings → General), then click **Deploy**.
+4. If you ever change the address, update it in `index.html` (canonical, `og:url`, JSON-LD), `robots.txt` and `sitemap.xml`.
 
 Every time you push to GitHub, Vercel redeploys automatically.
 

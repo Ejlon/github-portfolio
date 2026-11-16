@@ -32,6 +32,8 @@
 
   --wrap: 1180px;
   --gutter: clamp(20px, 4vw, 40px);
+
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -55,6 +57,11 @@ body {
 }
 
 img, svg { display: block; max-width: 100%; }
+
+h1, h2, h3 { text-wrap: balance; }
+p { text-wrap: pretty; }
+
+a, button { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
 
 a { color: var(--cobalt); text-underline-offset: 0.18em; text-decoration-thickness: 1px; }
 a:hover { text-decoration-thickness: 2px; }
@@ -180,8 +187,9 @@ a:hover { text-decoration-thickness: 2px; }
   font-weight: 600;
   text-decoration: none;
   cursor: pointer;
-  transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease, transform 0.16s var(--ease-out);
 }
+.btn:active { transform: scale(0.97); }
 .btn-primary { background: var(--cobalt); border-color: var(--cobalt); color: #fff; }
 .btn-primary:hover { background: var(--cobalt-deep); border-color: var(--cobalt-deep); }
 .btn-ghost { background: transparent; color: var(--ink); }
@@ -287,7 +295,7 @@ a:hover { text-decoration-thickness: 2px; }
   color: var(--steel);
   font-size: 0.875rem;
   white-space: nowrap;
-  transition: opacity 0.5s;
+  transition: opacity 0.3s var(--ease-out);
 }
 .board-hint.hide { opacity: 0; }
 
@@ -606,6 +614,7 @@ h3 {
   font-size: 0.9375rem;
   color: var(--cobalt);
   padding-top: 2px;
+  font-variant-numeric: tabular-nums;
 }
 .timeline h3 { font-size: 1.1875rem; margin-bottom: 4px; max-width: 46ch; }
 .tl-school { margin: 0; font-weight: 500; }
@@ -653,7 +662,10 @@ h3 {
   font-size: 0.9375rem;
   font-weight: 600;
   cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease, transform 0.16s var(--ease-out);
 }
+.tab:active { transform: scale(0.97); }
+.tab:not([aria-selected="true"]):hover { background: rgba(28, 34, 39, 0.08); }
 .tab[aria-selected="true"] { background: var(--ink); color: var(--page); }
 .tab-count {
   min-width: 1.6em;
@@ -736,4 +748,5 @@ h3 {
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { transition-duration: 0.01ms !important; }
+  .btn:active, .tab:active { transform: none; }
 }
