@@ -46,7 +46,7 @@ window.PORTFOLIO = {
 
   /* ---------- Projects ----------
      Shown as equal cards in this order (put the newest first).
-     highlights = the bullet points shown on each card.
+     Keep each description to one or two short sentences.
      github: paste the repo link to turn the "Code coming soon" label
      into a working "View code on GitHub" button.
      live: add a link to show a "Live site" button. */
@@ -57,13 +57,8 @@ window.PORTFOLIO = {
       title: "TindaTrack",
       subtitle: "Multi-Branch Inventory & POS System",
       description:
-        "A full-stack inventory and sales management app that centralizes retail grocery operations across a central warehouse and its branches.",
-      highlights: [
-        "Dual-location inventory in MySQL, with strict SQL transactions so stock transfers between the warehouse and branches never lose data.",
-        "JWT role-based access control (RBAC) with bcrypt password hashing for secure routing.",
-        "Recharts dashboards that show real-time sales, revenue, and profit for each role.",
-      ],
-      tech: ["React.js", "Node.js", "Express.js", "MySQL", "JWT", "bcrypt", "Recharts"],
+        "Tracks stock and sales for a grocery business across its warehouse and branches, with dashboards for sales and profit.",
+      tech: ["React.js", "Node.js", "Express.js", "MySQL"],
       live: "",
       github: "https://github.com/Ejlon/tindatrack",
     },
@@ -71,16 +66,11 @@ window.PORTFOLIO = {
       type: "Capstone thesis",
       period: "February 2026 – Present",
       title: "WEVA",
-      subtitle: "Agentic Runtime Application Security Framework: Behavioral Threat Detection",
+      subtitle: "Behavioral Threat Detection for Student Information Systems",
       description:
-        "A behavioral security layer for a student information system. It watches how each user and device acts and responds in proportion to the risk, stopping brute-force and automated attacks without getting in the way of real students.",
-      highlights: [
-        "Behavioral profiling layer that scores live network traffic per user with an exponential moving average (EMA), flagging brute-force, DoS, and DDoS patterns in real time.",
-        "Hexagonal Architecture (ports and adapters) keeps the threat-detection logic independent of the Express.js routes and the Prisma/PostgreSQL data layer.",
-        "Hardened cryptography: CSPRNG-based OTP generation, constant-time secret comparison with timingSafeEqual, and AES-256-GCM encryption for data at rest.",
-      ],
-      note: "Built with a team of three at MSEUF.",
-      tech: ["Node.js", "Express.js", "PostgreSQL", "Prisma ORM", "JWT", "AES-256-GCM"],
+        "A security layer that learns how users normally behave and blocks brute-force and automated attacks in real time.",
+      tech: ["Node.js", "Express.js", "PostgreSQL", "Prisma ORM"],
+      note: "Team of three at MSEUF.",
       live: "",
       github: "https://github.com/KEMMM67/Thesis-repo",
     },
@@ -90,13 +80,8 @@ window.PORTFOLIO = {
       title: "ExpenSave",
       subtitle: "Budget Tracker App",
       description:
-        "A native iOS personal finance app, built with Swift and the MVVM architecture for a clean, testable codebase.",
-      highlights: [
-        "Full CRUD for tracking transactions, managing custom expense categories, and setting monthly budgets.",
-        "Google Firebase authentication and Cloud Firestore, alongside Core Data, to store and sync relational data.",
-        "Dashboards that turn raw transactions into interactive pie charts and circular goal-tracking progress bars.",
-      ],
-      tech: ["Swift", "MVVM", "Firebase Auth", "Cloud Firestore", "Core Data"],
+        "Log expenses, set monthly budgets, and see where your money goes with simple charts.",
+      tech: ["Swift", "Firebase", "Core Data"],
       live: "",
       github: "", // paste the GitHub repo link here
     },
