@@ -82,7 +82,7 @@ window.PORTFOLIO = {
       note: "Built with a team of three at MSEUF.",
       tech: ["Node.js", "Express.js", "PostgreSQL", "Prisma ORM", "JWT", "AES-256-GCM"],
       live: "",
-      github: "", // paste the GitHub repo link here
+      github: "https://github.com/KEMMM67/Thesis-repo",
     },
     {
       type: "iOS app",
