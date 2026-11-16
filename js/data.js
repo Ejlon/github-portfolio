@@ -18,7 +18,10 @@ window.PORTFOLIO = {
   lanyardText: "elon", // printed along the lanyard strap
   initials: "JL", // shown on the badge when there's no photo
   photo: "assets/img/elon.jpg", // e.g. "assets/img/elon.jpg" (square photo works best)
+  portrait: "assets/img/elon-portrait.jpg", // tall photo for the hero frame (4:5)
   roles: ["Software Developer", "UI Designer"],
+  // the hero types these out one after another
+  typedRoles: ["Software Developer", "UI Designer", "Full-Stack Web Developer", "iOS Developer"],
   location: "Lucena City, Quezon Province, Philippines",
   badgeLocation: "Lucena City, PH",
   email: "labsojohnelon@gmail.com",

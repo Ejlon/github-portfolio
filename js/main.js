@@ -23,8 +23,20 @@
     wrench: '<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>',
     wheel: '<circle cx="12" cy="12" r="9.5"/><circle cx="12" cy="12" r="6.5"/><circle cx="12" cy="12" r="1.6"/><path d="M12 5.5v4.9M12 13.6v4.9M5.5 12h4.9M13.6 12h4.9"/>',
     chip: '<rect x="6" y="6" width="12" height="12" rx="1.5"/><rect x="9.5" y="9.5" width="5" height="5" rx=".5"/><path d="M9.5 2.5V6M14.5 2.5V6M9.5 18v3.5M14.5 18v3.5M2.5 9.5H6M2.5 14.5H6M18 9.5h3.5M18 14.5h3.5"/>',
-    pin: '<path d="M12 21s-7-6.2-7-11.6a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.4" r="2.4"/>'
+    pin: '<path d="M12 21s-7-6.2-7-11.6a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.4" r="2.4"/>',
+    code: '<path d="m8 8-4 4 4 4M16 8l4 4-4 4M13.5 5l-3 14"/>',
+    layers: '<path d="m12 3 9 5-9 5-9-5 9-5z"/><path d="m3 13 9 5 9-5"/>',
+    db: '<ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/>',
+    cloud: '<path d="M7 18h10a4 4 0 0 0 .6-7.96A6 6 0 0 0 6.1 9.2 4.5 4.5 0 0 0 7 18z"/>',
+    pen: '<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/>',
+    tool: '<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>',
+    mail: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>'
   };
+  var BRAND = {
+    github: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.42-2.69 5.39-5.26 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5z"/></svg>',
+    linkedin: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9.75h4v11H3zM9.5 9.75h3.8v1.5h.06c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.77 2.65 4.77 6.1v5.45h-4v-4.83c0-1.15-.02-2.63-1.6-2.63-1.6 0-1.85 1.25-1.85 2.55v4.91h-4z"/></svg>'
+  };
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var icon = function (name) {
     return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + (ICONS[name] || ICONS.wrench) + "</svg>";
   };
@@ -40,7 +52,7 @@
     var words = (D.heroName || D.name).trim().split(/\s+/);
     var lastWord = words.pop();
     $("hero-name").innerHTML = "<span>" + esc(words.join(" ")) + "</span><span>" + esc(lastWord) + "</span>";
-    $("hero-role").textContent = D.roles.join(" and ");
+    $("hero-role-static").textContent = D.roles.join(" and ");
     $("hero-lede").textContent = D.hero;
 
     var actions = '<a class="btn btn-primary" href="mailto:' + esc(D.email) + '">Email me</a>' +
@@ -49,6 +61,39 @@
     $("hero-actions").innerHTML = actions;
     $("hero-loc").innerHTML = icon("pin") + "<span>" + esc(D.location) + "</span>";
     $("wordmark").textContent = D.shortName;
+    $("nav-cta").href = "mailto:" + D.email;
+
+    // Photo in the glowing frame
+    var portrait = has(D.portrait) ? D.portrait : D.photo;
+    $("hero-photo").innerHTML = has(portrait)
+      ? '<img src="' + esc(portrait) + '" alt="Photo of ' + esc(D.name) + '" width="800" height="1000" fetchpriority="high">'
+      : "<span>" + esc(D.initials) + "</span>";
+    $("photo-caption").textContent = D.roles[0];
+
+    // Social icons
+    $("hero-socials").innerHTML = (D.socials || []).map(function (s) {
+      var key = s.label.toLowerCase();
+      return '<li><a href="' + esc(s.url) + '" target="_blank" rel="noopener noreferrer" aria-label="' + esc(s.label) + '">' + (BRAND[key] || icon("code")) + "</a></li>";
+    }).join("") + '<li><a href="mailto:' + esc(D.email) + '" aria-label="Email">' + icon("mail") + "</a></li>";
+
+    // Typed job titles
+    var roles = (D.typedRoles && D.typedRoles.length) ? D.typedRoles : D.roles;
+    var typed = $("hero-typed");
+    if (reduceMotion) {
+      typed.textContent = roles[0];
+    } else {
+      var r = 0, c = 0, del = false;
+      var tick = function () {
+        var word = roles[r];
+        c += del ? -1 : 1;
+        typed.textContent = word.slice(0, c);
+        var wait = del ? 35 : 70;
+        if (!del && c === word.length) { del = true; wait = 1600; }
+        else if (del && c === 0) { del = false; r = (r + 1) % roles.length; wait = 350; }
+        setTimeout(tick, wait);
+      };
+      setTimeout(tick, 600);
+    }
 
     // Badge
     $("badge").setAttribute("aria-label", "ID badge for " + D.shortName + ", " + D.roles.join(" and ") + ". Press Enter to swing it.");
@@ -66,7 +111,7 @@
     while (x < 118) {
       seed = (seed * 1103515245 + 12345) >>> 0;
       var w = 1 + (seed >>> 16) % 3;
-      bars += '<rect x="' + x + '" y="0" width="' + w + '" height="32" fill="#1C2227"/>';
+      bars += '<rect x="' + x + '" y="0" width="' + w + '" height="32" fill="#E9E1D8"/>';
       x += w + 1 + ((seed >>> 8) % 2);
     }
     $("badge-barcode").innerHTML = bars;
@@ -166,9 +211,11 @@
   }).join("");
 
   /* ---------- Skills ---------- */
-  $("skills-list").innerHTML = D.skills.map(function (g) {
-    return "<div><dt>" + esc(g.group) + '</dt><dd><ul class="chips">' +
-      g.items.map(function (s) { return "<li>" + esc(s) + "</li>"; }).join("") + "</ul></dd></div>";
+  var SKILL_ICONS = ["code", "layers", "db", "cloud", "pen", "tool"];
+  $("skills-list").innerHTML = D.skills.map(function (g, i) {
+    return '<article class="skill-card"><div class="skill-icon">' + icon(g.icon || SKILL_ICONS[i % SKILL_ICONS.length]) + "</div>" +
+      "<h3>" + esc(g.group) + '</h3><ul class="chips">' +
+      g.items.map(function (s) { return "<li>" + esc(s) + "</li>"; }).join("") + "</ul></article>";
   }).join("");
 
   /* ---------- Certificates (tabs) ---------- */
@@ -236,7 +283,11 @@
     mail.href = "mailto:" + D.email;
     mail.textContent = D.email;
 
-    var rows = '<li><span>Location</span><p style="margin:0">' + esc(D.location) + "</p></li>";
+    var fa = '<a class="btn btn-primary" href="mailto:' + esc(D.email) + '">Email me</a>';
+    if (has(D.resume)) fa += '<a class="btn btn-ghost" href="' + esc(D.resume) + '" download>Download résumé</a>';
+    $("finale-actions").insertAdjacentHTML("afterbegin", fa);
+
+    var rows = '<li><span>Location</span><p>' + esc(D.location) + "</p></li>";
     rows += (D.socials || []).map(function (s) {
       return "<li><span>" + esc(s.label) + "</span>" + ext(s.url, s.handle || s.url) + "</li>";
     }).join("");
@@ -293,6 +344,67 @@
     document.addEventListener("keydown", function (e) {
       if (e.key === "Escape" && links.classList.contains("open")) { setOpen(false); toggle.focus(); }
     });
+  })();
+
+  /* ---------- Intro (once per visit) ---------- */
+  (function intro() {
+    var el = $("intro");
+    var seen = false;
+    try { seen = sessionStorage.getItem("introSeen") === "1"; sessionStorage.setItem("introSeen", "1"); } catch (e) {}
+    if (seen || reduceMotion) { document.documentElement.classList.add("no-intro"); el.classList.add("done"); return; }
+    var finish = function () {
+      el.classList.add("done");
+      document.removeEventListener("keydown", finish);
+    };
+    el.addEventListener("click", finish);
+    document.addEventListener("keydown", finish);
+    setTimeout(finish, 1700);
+  })();
+
+  /* ---------- Scroll reveals ---------- */
+  (function reveal() {
+    if (reduceMotion || !("IntersectionObserver" in window)) return;
+    var groups = [
+      ".section-head .kicker", ".section-head .mega", ".about-grid > *", ".project-card",
+      ".skill-card", ".timeline li", ".cert-wrap", ".finale > *"
+    ];
+    var els = document.querySelectorAll(groups.join(","));
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); }
+      });
+    }, { rootMargin: "0px 0px -10% 0px", threshold: 0.12 });
+    Array.prototype.forEach.call(els, function (el) {
+      // stagger siblings of the same kind
+      var i = 0, sib = el;
+      while ((sib = sib.previousElementSibling)) { if (sib.className === el.className) i++; }
+      el.style.transitionDelay = Math.min(i, 5) * 80 + "ms";
+      el.classList.add("reveal");
+      io.observe(el);
+    });
+  })();
+
+  /* ---------- Custom cursor (mouse only) ---------- */
+  (function cursor() {
+    if (reduceMotion || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+    var dot = document.createElement("div"), ring = document.createElement("div");
+    dot.className = "cursor-dot"; ring.className = "cursor-ring";
+    dot.setAttribute("aria-hidden", "true"); ring.setAttribute("aria-hidden", "true");
+    document.body.appendChild(dot); document.body.appendChild(ring);
+    var mx = -100, my = -100, rx = -100, ry = -100, raf = 0;
+    var loop = function () {
+      rx += (mx - rx) * 0.2; ry += (my - ry) * 0.2;
+      ring.style.transform = "translate3d(" + rx.toFixed(1) + "px," + ry.toFixed(1) + "px,0)";
+      raf = Math.abs(mx - rx) + Math.abs(my - ry) > 0.3 ? requestAnimationFrame(loop) : 0;
+    };
+    document.addEventListener("mousemove", function (e) {
+      mx = e.clientX; my = e.clientY;
+      dot.style.transform = "translate3d(" + mx + "px," + my + "px,0)";
+      document.documentElement.classList.add("has-cursor");
+      if (!raf) raf = requestAnimationFrame(loop);
+      ring.classList.toggle("hover", !!(e.target.closest && e.target.closest("a, button, .badge, [role=tab]")));
+    }, { passive: true });
+    document.addEventListener("mouseleave", function () { document.documentElement.classList.remove("has-cursor"); });
   })();
 
   /* =======================================================================
