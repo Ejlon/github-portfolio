@@ -131,7 +131,11 @@ window.PORTFOLIO = {
     {
       group: "Coursera",
       items: [
-        // paste Coursera certificates here
+        { name: "Software Testing, Deployment, and Maintenance Strategies", issuer: "IBM", year: "2026", link: "https://coursera.org/verify/4LF36HEGX9JT" },
+        { name: "Software Engineering Specialization (3 courses)", issuer: "The Hong Kong University of Science and Technology", year: "2026", link: "https://coursera.org/verify/specialization/JUFFXSKS60YR" },
+        { name: "Machine Learning with Python: Build Real-World ML Models", issuer: "IBM", year: "2026", link: "https://coursera.org/verify/KKZCX9THLANQ" },
+        { name: "Dynamic Programming, Greedy Algorithms", issuer: "University of Colorado Boulder", year: "2025", link: "https://coursera.org/verify/1J9IVT9HJM3G" },
+        { name: "Introduction to Relational Databases (RDBMS)", issuer: "IBM", year: "2025", link: "https://coursera.org/verify/3DU80CPZD10I" },
       ],
     },
     {
