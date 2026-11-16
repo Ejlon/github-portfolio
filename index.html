@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>John Elon C. Labso | Software Developer and UI Designer</title>
+  <meta name="description" content="Portfolio of John Elon C. Labso, a software developer and UI designer from Lucena City, Quezon Province, Philippines.">
+  <meta name="theme-color" content="#EEF0EB">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="John Elon C. Labso | Software Developer and UI Designer">
+  <meta property="og:description" content="Projects, skills, and certificates of John Elon C. Labso.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="assets/fonts/archivo-variable.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/data.js" defer></script>
+  <script src="js/main.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header" id="site-header">
+    <nav class="nav" aria-label="Main">
+      <a class="wordmark" href="#top" id="wordmark">Elon</a>
+      <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links">Menu</button>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li data-for="experience"><a href="#experience">Experience</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#education">Education</a></li>
+        <li><a href="#certificates">Certificates</a></li>
+        <li data-for="achievements"><a href="#achievements">Achievements</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main">
+    <!-- HERO -->
+    <section class="hero" id="top" aria-labelledby="hero-name">
+      <div class="hero-text">
+        <h1 id="hero-name"></h1>
+        <p class="hero-role" id="hero-role"></p>
+        <p class="hero-lede" id="hero-lede"></p>
+        <div class="actions" id="hero-actions"></div>
+        <p class="hero-loc" id="hero-loc"></p>
+      </div>
+
+      <div class="board" id="board">
+        <svg class="board-svg" id="board-svg" aria-hidden="true">
+          <path class="strap-shadow" id="strap-shadow" />
+          <path class="strap-edge" id="strap-edge" />
+          <path class="strap-face" id="strap-face" />
+          <text class="strap-text"><textPath href="#strap-face" id="strap-text" startOffset="14"></textPath></text>
+          <g id="hook"></g>
+        </svg>
+
+        <div class="badge" id="badge" tabindex="0" role="img">
+          <div class="badge-clip" aria-hidden="true"></div>
+          <div class="badge-card" aria-hidden="true">
+            <div class="badge-band"><span class="badge-slot"></span><small>Portfolio</small></div>
+            <div class="badge-body">
+              <div class="badge-photo" id="badge-photo"></div>
+              <p class="badge-name" id="badge-name"></p>
+              <p class="badge-full" id="badge-full"></p>
+              <p class="badge-role" id="badge-role"></p>
+            </div>
+            <div class="badge-foot">
+              <svg id="badge-barcode" viewBox="0 0 120 32" preserveAspectRatio="none"></svg>
+              <span id="badge-loc"></span>
+            </div>
+          </div>
+        </div>
+
+        <p class="board-hint" id="board-hint">Drag the badge</p>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="section" id="about" aria-labelledby="about-title">
+      <div class="section-head"><h2 id="about-title">About</h2></div>
+      <div class="section-body">
+        <div class="prose" id="about-text"></div>
+        <div class="offkb">
+          <h3>Off the keyboard</h3>
+          <ul id="offkb-list"></ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section class="section" id="projects" aria-labelledby="projects-title">
+      <div class="section-head"><h2 id="projects-title">Projects</h2></div>
+      <div class="section-body" id="projects-list"></div>
+    </section>
+
+    <!-- EXPERIENCE (hidden when empty) -->
+    <section class="section" id="experience" aria-labelledby="experience-title">
+      <div class="section-head"><h2 id="experience-title">Experience</h2></div>
+      <div class="section-body"><ol class="timeline" id="experience-list"></ol></div>
+    </section>
+
+    <!-- SKILLS -->
+    <section class="section" id="skills" aria-labelledby="skills-title">
+      <div class="section-head"><h2 id="skills-title">Skills</h2></div>
+      <div class="section-body"><dl class="skills" id="skills-list"></dl></div>
+    </section>
+
+    <!-- EDUCATION -->
+    <section class="section" id="education" aria-labelledby="education-title">
+      <div class="section-head"><h2 id="education-title">Education</h2></div>
+      <div class="section-body"><ol class="timeline" id="education-list"></ol></div>
+    </section>
+
+    <!-- CERTIFICATES -->
+    <section class="section" id="certificates" aria-labelledby="certificates-title">
+      <div class="section-head"><h2 id="certificates-title">Certificates</h2></div>
+      <div class="section-body">
+        <div class="tabs" role="tablist" aria-label="Certificate groups" id="cert-tabs"></div>
+        <div id="cert-panels"></div>
+      </div>
+    </section>
+
+    <!-- ACHIEVEMENTS (hidden when empty) -->
+    <section class="section" id="achievements" aria-labelledby="achievements-title">
+      <div class="section-head"><h2 id="achievements-title">Achievements</h2></div>
+      <div class="section-body"><ul class="rows" id="achievements-list"></ul></div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="section contact" id="contact" aria-labelledby="contact-title">
+      <div class="section-head"><h2 id="contact-title">Contact</h2></div>
+      <div class="section-body">
+        <p class="contact-lede">Have a project, a role, or a question? Email is the fastest way to reach me.</p>
+        <a class="contact-email" id="contact-email" href="#"></a>
+        <div class="actions">
+          <button class="btn btn-ghost" id="copy-email" type="button">Copy email</button>
+        </div>
+        <ul class="contact-list" id="contact-list"></ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p id="footer-name"></p>
+    <a href="#top">Back to top</a>
+  </footer>
+
+  <noscript>
+    <p class="noscript">This portfolio needs JavaScript to show its content. You can reach John Elon C. Labso at labsojohnelon@gmail.com.</p>
+  </noscript>
+</body>
+</html>
