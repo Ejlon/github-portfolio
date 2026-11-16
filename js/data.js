@@ -17,7 +17,7 @@ window.PORTFOLIO = {
   shortName: "Elon", // shown on the badge
   lanyardText: "elon", // printed along the lanyard strap
   initials: "JL", // shown on the badge when there's no photo
-  photo: "", // e.g. "assets/img/elon.jpg" (square photo works best)
+  photo: "assets/img/elon.jpg", // e.g. "assets/img/elon.jpg" (square photo works best)
   roles: ["Software Developer", "UI Designer"],
   location: "Lucena City, Quezon Province, Philippines",
   badgeLocation: "Lucena City, PH",
