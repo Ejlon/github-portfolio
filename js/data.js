@@ -130,24 +130,26 @@ window.PORTFOLIO = {
   ],
 
   /* ---------- Certificates ----------
-     Each group becomes a tab. Example item:
-     { name: "Introduction to Python", issuer: "University of Michigan", year: "2025", link: "https://coursera.org/verify/XXXX" },
+     Each group becomes its own heading with a card grid.
+     image = preview picture in assets/certs/ (a small copy goes in assets/certs/thumb/)
+     link  = the Coursera "verify" page
+     Example item:
+     { name: "Course name", issuer: "University or company", date: "Jun 2026", image: "assets/certs/ID.jpg", link: "https://coursera.org/verify/ID" },
   */
   certificates: [
     {
-      group: "Coursera",
+      group: "Specializations",
       items: [
-        { name: "Software Testing, Deployment, and Maintenance Strategies", issuer: "IBM", year: "2026", link: "https://coursera.org/verify/4LF36HEGX9JT" },
-        { name: "Software Engineering Specialization (3 courses)", issuer: "The Hong Kong University of Science and Technology", year: "2026", link: "https://coursera.org/verify/specialization/JUFFXSKS60YR" },
-        { name: "Machine Learning with Python: Build Real-World ML Models", issuer: "IBM", year: "2026", link: "https://coursera.org/verify/KKZCX9THLANQ" },
-        { name: "Dynamic Programming, Greedy Algorithms", issuer: "University of Colorado Boulder", year: "2025", link: "https://coursera.org/verify/1J9IVT9HJM3G" },
-        { name: "Introduction to Relational Databases (RDBMS)", issuer: "IBM", year: "2025", link: "https://coursera.org/verify/3DU80CPZD10I" },
+        { name: "Software Engineering Specialization", issuer: "The Hong Kong University of Science and Technology", date: "Apr 2026", image: "assets/certs/JUFFXSKS60YR.jpg", link: "https://coursera.org/verify/specialization/JUFFXSKS60YR" },
       ],
     },
     {
-      group: "Others",
+      group: "Courses",
       items: [
-        { name: "TCL Certificate of Participation", issuer: "TCL", year: "", link: "" },
+        { name: "Software Testing, Deployment, and Maintenance Strategies", issuer: "IBM", date: "Jun 2026", image: "assets/certs/4LF36HEGX9JT.jpg", link: "https://coursera.org/verify/4LF36HEGX9JT" },
+        { name: "Machine Learning with Python: Build Real-World ML Models", issuer: "IBM", date: "Apr 2026", image: "assets/certs/KKZCX9THLANQ.jpg", link: "https://coursera.org/verify/KKZCX9THLANQ" },
+        { name: "Dynamic Programming, Greedy Algorithms", issuer: "University of Colorado Boulder", date: "May 2025", image: "assets/certs/1J9IVT9HJM3G.jpg", link: "https://coursera.org/verify/1J9IVT9HJM3G" },
+        { name: "Introduction to Relational Databases (RDBMS)", issuer: "IBM", date: "May 2025", image: "assets/certs/3DU80CPZD10I.jpg", link: "https://coursera.org/verify/3DU80CPZD10I" },
       ],
     },
   ],

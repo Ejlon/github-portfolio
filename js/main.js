@@ -218,52 +218,65 @@
       g.items.map(function (s) { return "<li>" + esc(s) + "</li>"; }).join("") + "</ul></article>";
   }).join("");
 
-  /* ---------- Certificates (tabs) ---------- */
+  /* ---------- Certificates (preview cards + viewer) ---------- */
   (function certificates() {
-    var groups = D.certificates || [];
+    var groups = (D.certificates || []).filter(function (g) { return g.items && g.items.length; });
     if (!groups.length) { hideSection("certificates"); return; }
-    var tabs = $("cert-tabs"), panels = $("cert-panels");
-    var start = 0;
-    for (var g = 0; g < groups.length; g++) { if (groups[g].items.length) { start = g; break; } }
+    var all = [];
+    var thumb = function (src) { return src.indexOf("assets/certs/") === 0 ? src.replace("assets/certs/", "assets/certs/thumb/") : src; };
+    var ARROW = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>';
 
-    tabs.innerHTML = groups.map(function (grp, i) {
-      return '<button class="tab" role="tab" type="button" id="cert-tab-' + i + '" aria-controls="cert-panel-' + i + '" aria-selected="' + (i === start) + '" tabindex="' + (i === start ? 0 : -1) + '">' +
-        esc(grp.group) + '<span class="tab-count">' + grp.items.length + "</span></button>";
+    $("cert-groups").innerHTML = groups.map(function (grp) {
+      return '<div class="cert-group"><h3 class="cert-group-title">' + esc(grp.group) +
+        '<span class="count">' + grp.items.length + "</span></h3>" +
+        '<div class="cert-grid">' + grp.items.map(function (c) {
+          var i = all.push(c) - 1;
+          var img = has(c.image)
+            ? '<button class="cert-thumb" type="button" data-cert="' + i + '" aria-label="View ' + esc(c.name) + ' certificate">' +
+              '<img src="' + esc(thumb(c.image)) + '" alt="" width="720" height="556" loading="lazy" decoding="async"></button>'
+            : "";
+          return '<article class="cert-card">' + img +
+            '<div class="cert-body"><h4>' + esc(c.name) + "</h4>" +
+            (has(c.issuer) ? '<p class="cert-issuer">' + esc(c.issuer) + "</p>" : "") +
+            '<div class="cert-foot"><span class="cert-date">' + esc(c.date || c.year || "") + "</span>" +
+            '<span class="cert-links">' +
+            (has(c.image) ? '<button class="cert-link" type="button" data-cert="' + i + '">View</button>' : "") +
+            (has(c.link) ? '<a class="cert-link" href="' + esc(c.link) + '" target="_blank" rel="noopener noreferrer">Verify' + ARROW + "</a>" : "") +
+            "</span></div></div></article>";
+        }).join("") + "</div></div>";
     }).join("");
 
-    panels.innerHTML = groups.map(function (grp, i) {
-      var body = grp.items.length
-        ? '<ul class="rows">' + grp.items.map(function (c) {
-            var meta = [c.issuer, c.year].filter(has).map(esc).join(", ");
-            return '<li><div class="row-main"><h3>' + esc(c.name) + "</h3>" +
-              (meta ? '<p class="row-meta">' + meta + "</p>" : "") + "</div>" +
-              (has(c.link) ? '<a class="row-link" href="' + esc(c.link) + '" target="_blank" rel="noopener noreferrer">View certificate</a>' : "") +
-              "</li>";
-          }).join("") + "</ul>"
-        : '<p class="rows-empty">' + esc(grp.group) + " certificates will be listed here soon.</p>";
-      return '<div role="tabpanel" id="cert-panel-' + i + '" aria-labelledby="cert-tab-' + i + '" tabindex="0"' + (i === start ? "" : " hidden") + ">" + body + "</div>";
-    }).join("");
-
-    var buttons = Array.prototype.slice.call(tabs.querySelectorAll(".tab"));
-    var select = function (i, focus) {
-      buttons.forEach(function (b, j) {
-        var on = i === j;
-        b.setAttribute("aria-selected", on);
-        b.tabIndex = on ? 0 : -1;
-        $("cert-panel-" + j).hidden = !on;
+    // Viewer
+    var dlg = $("cert-viewer"), opener = null;
+    if (!dlg || typeof dlg.showModal !== "function") {
+      // very old browsers: open the image in a new tab instead
+      $("cert-groups").addEventListener("click", function (e) {
+        var b = e.target.closest("[data-cert]");
+        if (b) window.open(all[+b.getAttribute("data-cert")].image, "_blank", "noopener");
       });
-      if (focus) buttons[i].focus();
+      return;
+    }
+    var open = function (i, from) {
+      var c = all[i];
+      opener = from;
+      $("viewer-title").textContent = c.name;
+      $("viewer-img").src = c.image;
+      $("viewer-img").alt = c.name + " certificate";
+      $("viewer-meta").textContent = [c.issuer, c.date].filter(has).join(" · ");
+      var v = $("viewer-verify");
+      if (has(c.link)) { v.href = c.link; v.hidden = false; } else { v.hidden = true; }
+      dlg.showModal();
+      document.documentElement.classList.add("viewer-open");
     };
-    buttons.forEach(function (b, i) {
-      b.addEventListener("click", function () { select(i, false); });
-      b.addEventListener("keydown", function (e) {
-        var n = buttons.length, to = null;
-        if (e.key === "ArrowRight") to = (i + 1) % n;
-        else if (e.key === "ArrowLeft") to = (i - 1 + n) % n;
-        else if (e.key === "Home") to = 0;
-        else if (e.key === "End") to = n - 1;
-        if (to !== null) { e.preventDefault(); select(to, true); }
-      });
+    $("cert-groups").addEventListener("click", function (e) {
+      var b = e.target.closest("[data-cert]");
+      if (b) open(+b.getAttribute("data-cert"), b);
+    });
+    $("viewer-close").addEventListener("click", function () { dlg.close(); });
+    dlg.addEventListener("click", function (e) { if (e.target === dlg) dlg.close(); }); // click outside
+    dlg.addEventListener("close", function () {
+      document.documentElement.classList.remove("viewer-open");
+      if (opener) opener.focus();
     });
   })();
 
@@ -395,7 +408,7 @@
     if (reduceMotion || !("IntersectionObserver" in window)) return;
     var groups = [
       ".section-head .kicker", ".section-head .mega", ".about-grid > *", ".project-card",
-      ".skill-card", ".timeline li", ".cert-wrap", ".finale > *"
+      ".skill-card", ".timeline li", ".cert-card", ".finale > *"
     ];
     var els = document.querySelectorAll(groups.join(","));
     var io = new IntersectionObserver(function (entries) {

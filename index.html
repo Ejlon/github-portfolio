@@ -179,10 +179,7 @@
         <p class="kicker">What I've completed</p>
         <h2 class="mega" id="certificates-title" data-text="Certificates">Certificates</h2>
       </header>
-      <div class="cert-wrap">
-        <div class="tabs" role="tablist" aria-label="Certificate groups" id="cert-tabs"></div>
-        <div id="cert-panels"></div>
-      </div>
+      <div id="cert-groups"></div>
     </section>
 
     <!-- ACHIEVEMENTS (hidden when empty) -->
@@ -210,6 +207,21 @@
       <ul class="contact-list" id="contact-list"></ul>
     </section>
   </main>
+
+  <!-- Certificate viewer (opened by the "View" buttons) -->
+  <dialog class="viewer" id="cert-viewer" aria-labelledby="viewer-title">
+    <div class="viewer-head">
+      <p class="viewer-title" id="viewer-title"></p>
+      <button class="viewer-close" id="viewer-close" type="button" aria-label="Close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <img id="viewer-img" alt="" width="1400" height="1082">
+    <div class="viewer-foot">
+      <span id="viewer-meta"></span>
+      <a id="viewer-verify" class="btn btn-primary btn-sm" target="_blank" rel="noopener noreferrer">Verify on Coursera</a>
+    </div>
+  </dialog>
 
   <footer class="site-footer">
     <p id="footer-name"></p>
