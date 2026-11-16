@@ -212,10 +212,30 @@
 
   /* ---------- Skills ---------- */
   var SKILL_ICONS = ["code", "layers", "db", "cloud", "pen", "tool"];
+  // Logo for each skill (files in assets/icons/skills/). Logos listed in
+  // MONO are black, so they're shown white on the dark background.
+  var LOGOS = {
+    "python": "python", "java": "java", "c++": "cplusplus", "swift": "swift", "javascript": "javascript",
+    "sql": "azuresql", "html": "html", "css": "css",
+    "react.js": "react", "react": "react", "node.js": "nodejs", "express.js": "express", "flutter": "flutter",
+    "postgresql": "postgresql", "mysql": "mysql", "supabase": "supabase", "cloud firestore": "firebase", "core data": "apple",
+    "google firebase": "firebase", "firebase": "firebase", "prisma orm": "prisma", "jwt authentication": "jwt", "vercel": "vercel",
+    "figma": "figma",
+    "visual studio code": "vscode", "intellij idea": "intellij", "xcode": "xcode", "git": "git", "github": "github"
+  };
+  var MONO = { express: 1, apple: 1, vercel: 1, github: 1, jwt: 1, prisma: 1 };
+  var LIFT = { mysql: 1 }; // dark-coloured logos that need brightening
+  var skillChip = function (name) {
+    var key = LOGOS[String(name).toLowerCase()];
+    var img = key
+      ? '<img class="skill-logo' + (MONO[key] ? " mono" : LIFT[key] ? " lift" : "") + '" src="assets/icons/skills/' + key + '.svg" alt="" width="18" height="18" loading="lazy">'
+      : "";
+    return "<li>" + img + esc(name) + "</li>";
+  };
   $("skills-list").innerHTML = D.skills.map(function (g, i) {
     return '<article class="skill-card"><div class="skill-icon">' + icon(g.icon || SKILL_ICONS[i % SKILL_ICONS.length]) + "</div>" +
-      "<h3>" + esc(g.group) + '</h3><ul class="chips">' +
-      g.items.map(function (s) { return "<li>" + esc(s) + "</li>"; }).join("") + "</ul></article>";
+      "<h3>" + esc(g.group) + '</h3><ul class="chips skill-chips">' +
+      g.items.map(skillChip).join("") + "</ul></article>";
   }).join("");
 
   /* ---------- Certificates (preview cards + viewer) ---------- */
@@ -226,25 +246,69 @@
     var thumb = function (src) { return src.indexOf("assets/certs/") === 0 ? src.replace("assets/certs/", "assets/certs/thumb/") : src; };
     var ARROW = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>';
 
-    $("cert-groups").innerHTML = groups.map(function (grp) {
-      return '<div class="cert-group"><h3 class="cert-group-title">' + esc(grp.group) +
-        '<span class="count">' + grp.items.length + "</span></h3>" +
-        '<div class="cert-grid">' + grp.items.map(function (c) {
-          var i = all.push(c) - 1;
-          var img = has(c.image)
-            ? '<button class="cert-thumb" type="button" data-cert="' + i + '" aria-label="View ' + esc(c.name) + ' certificate">' +
-              '<img src="' + esc(thumb(c.image)) + '" alt="" width="720" height="556" loading="lazy" decoding="async"></button>'
-            : "";
-          return '<article class="cert-card">' + img +
-            '<div class="cert-body"><h4>' + esc(c.name) + "</h4>" +
-            (has(c.issuer) ? '<p class="cert-issuer">' + esc(c.issuer) + "</p>" : "") +
-            '<div class="cert-foot"><span class="cert-date">' + esc(c.date || c.year || "") + "</span>" +
-            '<span class="cert-links">' +
-            (has(c.image) ? '<button class="cert-link" type="button" data-cert="' + i + '">View</button>' : "") +
-            (has(c.link) ? '<a class="cert-link" href="' + esc(c.link) + '" target="_blank" rel="noopener noreferrer">Verify' + ARROW + "</a>" : "") +
-            "</span></div></div></article>";
-        }).join("") + "</div></div>";
-    }).join("");
+    var card = function (c) {
+      var i = all.push(c) - 1;
+      var img = has(c.image)
+        ? '<button class="cert-thumb" type="button" data-cert="' + i + '" aria-label="View ' + esc(c.name) + ' certificate">' +
+          '<img src="' + esc(thumb(c.image)) + '" alt="" width="720" height="556" loading="lazy" decoding="async"></button>'
+        : "";
+      return '<article class="cert-card">' + img +
+        '<div class="cert-body"><h4>' + esc(c.name) + "</h4>" +
+        (has(c.issuer) ? '<p class="cert-issuer">' + esc(c.issuer) + "</p>" : "") +
+        '<div class="cert-foot"><span class="cert-date">' + esc(c.date || c.year || "") + "</span>" +
+        '<span class="cert-links">' +
+        (has(c.image) ? '<button class="cert-link" type="button" data-cert="' + i + '">View</button>' : "") +
+        (has(c.link) ? '<a class="cert-link" href="' + esc(c.link) + '" target="_blank" rel="noopener noreferrer">Verify' + ARROW + "</a>" : "") +
+        "</span></div></div></article>";
+    };
+
+    // One tab per group (Specializations, Courses…); only the chosen group shows
+    var multi = groups.length > 1;
+    $("cert-groups").innerHTML =
+      (multi ? '<div class="cert-tabs-wrap"><div class="tabs" role="tablist" aria-label="Certificate type">' +
+        groups.map(function (grp, i) {
+          return '<button class="tab" role="tab" type="button" id="cert-tab-' + i + '" aria-controls="cert-panel-' + i + '" aria-selected="' + (i === 0) + '" tabindex="' + (i === 0 ? 0 : -1) + '">' +
+            esc(grp.group) + '<span class="tab-count">' + grp.items.length + "</span></button>";
+        }).join("") + "</div></div>" : "") +
+      groups.map(function (grp, i) {
+        return '<div class="cert-panel" id="cert-panel-' + i + '"' +
+          (multi ? ' role="tabpanel" aria-labelledby="cert-tab-' + i + '" tabindex="0"' + (i === 0 ? "" : " hidden") : "") + ">" +
+          (multi ? "" : '<h3 class="cert-group-title">' + esc(grp.group) + '<span class="count">' + grp.items.length + "</span></h3>") +
+          '<div class="cert-grid">' + grp.items.map(card).join("") + "</div></div>";
+      }).join("");
+
+    if (multi) {
+      var buttons = Array.prototype.slice.call(document.querySelectorAll("#cert-groups .tab"));
+      var select = function (i, focus) {
+        buttons.forEach(function (b, j) {
+          var on = i === j;
+          b.setAttribute("aria-selected", on);
+          b.tabIndex = on ? 0 : -1;
+          var panel = $("cert-panel-" + j);
+          panel.hidden = !on;
+          if (on) {
+            // replay the card entrance for the group that just appeared
+            Array.prototype.forEach.call(panel.querySelectorAll(".cert-card"), function (c, k) {
+              c.classList.remove("swap-in"); void c.offsetWidth;
+              c.style.animationDelay = k * 60 + "ms";
+              c.classList.add("swap-in", "in");
+            });
+          }
+        });
+        if (focus) buttons[i].focus();
+      };
+      buttons.forEach(function (b, i) {
+        b.addEventListener("click", function () { select(i, false); });
+        b.addEventListener("keydown", function (e) {
+          var n = buttons.length, to = null;
+          if (e.key === "ArrowRight") to = (i + 1) % n;
+          else if (e.key === "ArrowLeft") to = (i - 1 + n) % n;
+          else if (e.key === "Home") to = 0;
+          else if (e.key === "End") to = n - 1;
+          if (to !== null) { e.preventDefault(); select(to, true); }
+        });
+      });
+    }
 
     // Viewer
     var dlg = $("cert-viewer"), opener = null;
