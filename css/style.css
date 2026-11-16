@@ -564,7 +564,7 @@ a:hover { text-decoration-thickness: 2px; }
   padding: clamp(72px, 10vw, 128px) var(--gutter);
 }
 
-.section-head { margin-bottom: clamp(36px, 5vw, 56px); text-align: center; }
+.section-head { margin-bottom: clamp(36px, 5vw, 56px); text-align: center; container-type: inline-size; }
 
 .kicker {
   display: inline-block;
@@ -580,8 +580,13 @@ a:hover { text-decoration-thickness: 2px; }
 
 /* Giant outlined title with a glow */
 .mega {
+  /* --w is the word's width in em (set by main.js); the title shrinks to fit
+     its line instead of breaking mid-word. 10.4 is the widest word, so the
+     fallback always fits even before the script runs. */
   margin: 0;
   font-size: clamp(2.75rem, 9vw, 7.5rem);
+  font-size: min(max(2.75rem, 9vw), 7.5rem, calc(96cqi / var(--w, 10.4)));
+  white-space: nowrap;
   font-weight: 300;
   font-stretch: 125%;
   line-height: 0.95;
@@ -590,7 +595,6 @@ a:hover { text-decoration-thickness: 2px; }
   color: transparent;
   -webkit-text-stroke: 1.5px var(--orange);
   text-shadow: 0 0 30px rgba(255, 122, 26, 0.35);
-  overflow-wrap: anywhere;
 }
 @supports not (-webkit-text-stroke: 1px black) {
   .mega { color: var(--orange); }

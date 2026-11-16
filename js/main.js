@@ -359,6 +359,24 @@
     });
   })();
 
+  /* ---------- Big titles: measure each word so CSS can fit it on one line ---------- */
+  (function fitTitles() {
+    var measure = function () {
+      Array.prototype.forEach.call(document.querySelectorAll(".mega"), function (el) {
+        el.style.removeProperty("--w");
+        var fs = parseFloat(getComputedStyle(el).fontSize);
+        var range = document.createRange();
+        range.selectNodeContents(el);
+        // undo any scale from the reveal animation
+        var scale = el.offsetWidth ? el.getBoundingClientRect().width / el.offsetWidth : 1;
+        var w = range.getBoundingClientRect().width / (scale || 1);
+        if (fs && w) el.style.setProperty("--w", (w / fs + 0.15).toFixed(2));
+      });
+    };
+    measure();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
+  })();
+
   /* ---------- Menu highlight: shows which section you're in ---------- */
   (function scrollspy() {
     var links = Array.prototype.slice.call(document.querySelectorAll("#nav-links a"));
