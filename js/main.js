@@ -91,11 +91,20 @@
     var chips = function (list) {
       return list && list.length ? '<ul class="chips" aria-label="Built with">' + list.map(function (t) { return "<li>" + esc(t) + "</li>"; }).join("") + "</ul>" : "";
     };
+    var GH = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.42-2.69 5.39-5.26 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5z"/></svg>';
     var links = function (p) {
-      var out = [];
-      if (has(p.live)) out.push(ext(p.live, "Live site"));
-      if (has(p.github)) out.push(ext(p.github, "Source code"));
-      return out.length ? '<div class="project-links">' + out.join("") + "</div>" : "";
+      var out = has(p.github)
+        ? '<a class="btn btn-ghost btn-sm" href="' + esc(p.github) + '" target="_blank" rel="noopener noreferrer">' + GH + "View code on GitHub</a>"
+        : '<span class="btn btn-sm btn-soon" aria-disabled="true">' + GH + "Code coming soon</span>";
+      if (has(p.live)) out += '<a class="btn btn-primary btn-sm" href="' + esc(p.live) + '" target="_blank" rel="noopener noreferrer">Live site</a>';
+      return '<div class="project-links">' + out + "</div>";
+    };
+    var meta = function (p) {
+      var bits = [has(p.type) ? '<span class="project-type">' + esc(p.type) + "</span>" : "", has(p.period) ? '<span class="project-period">' + esc(p.period) + "</span>" : ""].join("");
+      return bits ? '<p class="project-meta">' + bits + "</p>" : "";
+    };
+    var highlights = function (p) {
+      return p.highlights && p.highlights.length ? '<ul class="highlights">' + p.highlights.map(function (h) { return "<li>" + esc(h) + "</li>"; }).join("") + "</ul>" : "";
     };
 
     var filled = D.projects.filter(function (p) { return has(p.title); });
@@ -106,11 +115,12 @@
 
     if (featured) {
       html += '<article class="project-feature">' +
-        (has(featured.type) ? '<p class="project-type">' + esc(featured.type) + "</p>" : "") +
+        meta(featured) +
         "<h3>" + esc(featured.title) + "</h3>" +
         (has(featured.subtitle) ? '<p class="project-sub">' + esc(featured.subtitle) + "</p>" : "") +
         (has(featured.description) ? '<p class="project-desc">' + esc(featured.description) + "</p>" : "") +
         (featured.steps && featured.steps.length ? '<ol class="steps" aria-label="How it works">' + featured.steps.map(function (s) { return "<li>" + esc(s) + "</li>"; }).join("") + "</ol>" : "") +
+        highlights(featured) +
         chips(featured.tech) +
         (has(featured.note) ? '<p class="project-note">' + esc(featured.note) + "</p>" : "") +
         links(featured) +
@@ -121,9 +131,11 @@
       html += '<div class="project-grid">';
       html += rest.map(function (p) {
         return '<article class="project-card">' +
-          (has(p.type) ? '<p class="project-type">' + esc(p.type) + "</p>" : "") +
+          meta(p) +
           "<h3>" + esc(p.title) + "</h3>" +
+          (has(p.subtitle) ? '<p class="project-sub">' + esc(p.subtitle) + "</p>" : "") +
           (has(p.description) ? '<p class="project-desc">' + esc(p.description) + "</p>" : "") +
+          highlights(p) +
           chips(p.tech) + links(p) + "</article>";
       }).join("");
       if (pending) html += '<div class="project-soon"><p>More projects are on the way.</p></div>';

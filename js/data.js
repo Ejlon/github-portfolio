@@ -46,43 +46,65 @@ window.PORTFOLIO = {
 
   /* ---------- Projects ----------
      The first one with featured: true gets the big layout.
-     A project with an empty title shows as "More projects coming soon"
-     until you fill it in. */
+     highlights = the bullet points shown on each card.
+     github: paste the repo link to turn the "Code coming soon" label
+     into a working "View code on GitHub" button.
+     live: add a link to show a "Live site" button. */
   projects: [
     {
       featured: true,
       type: "Capstone thesis",
+      period: "February 2026 – Present",
       title: "WEVA",
-      subtitle: "Agentic Runtime Application Security Framework for Student Information Systems",
+      subtitle: "Agentic Runtime Application Security Framework: Behavioral Threat Detection",
       description:
-        "A behavioral security layer for a student information system. It watches how each device acts around login and responds in proportion to the risk, stopping brute-force and automated attacks without getting in the way of real students.",
+        "A behavioral security layer for a student information system. It watches how each user and device acts and responds in proportion to the risk, stopping brute-force and automated attacks without getting in the way of real students.",
       steps: [
         "Identifies each device before it logs in",
-        "Tracks its behavior over a sliding window and scores the risk",
+        "Scores its live traffic over time and flags risky patterns",
         "Allows, logs, throttles, or blocks the request",
       ],
+      highlights: [
+        "Behavioral profiling layer that scores live network traffic per user with an exponential moving average (EMA), flagging brute-force, DoS, and DDoS patterns in real time.",
+        "Hexagonal Architecture (ports and adapters) keeps the threat-detection logic independent of the Express.js routes and the Prisma/PostgreSQL data layer.",
+        "Hardened cryptography: CSPRNG-based OTP generation, constant-time secret comparison with timingSafeEqual, and AES-256-GCM encryption for data at rest.",
+      ],
       note: "Built with a team of three at MSEUF.",
-      tech: ["Node.js", "Express.js", "PostgreSQL", "Prisma ORM", "JWT"],
-      live: "", // add the live link here
-      github: "", // add the GitHub repo link here
-    },
-    {
-      type: "Personal project · Ongoing",
-      title: "TindaTrack",
-      description:
-        "A multi-branch inventory and point-of-sale web app for grocery stores. Stock moves between the central warehouse and each branch inside SQL transactions, so counts never drift, and role-based dashboards chart sales, revenue, and profit.",
-      tech: ["React.js", "Node.js", "Express.js", "MySQL", "JWT", "Recharts"],
+      tech: ["Node.js", "Express.js", "PostgreSQL", "Prisma ORM", "JWT", "AES-256-GCM"],
       live: "",
-      github: "",
+      github: "", // paste the GitHub repo link here
     },
     {
-      type: "iOS app · 2025",
-      title: "ExpenSave",
+      type: "Full-stack web app",
+      period: "Ongoing",
+      title: "TindaTrack",
+      subtitle: "Multi-Branch Inventory & POS System",
       description:
-        "A native iOS budget tracker. Log transactions, set custom categories and monthly budgets, and see spending as pie charts and goal-progress rings.",
+        "A full-stack inventory and sales management app that centralizes retail grocery operations across a central warehouse and its branches.",
+      highlights: [
+        "Dual-location inventory in MySQL, with strict SQL transactions so stock transfers between the warehouse and branches never lose data.",
+        "JWT role-based access control (RBAC) with bcrypt password hashing for secure routing.",
+        "Recharts dashboards that show real-time sales, revenue, and profit for each role.",
+      ],
+      tech: ["React.js", "Node.js", "Express.js", "MySQL", "JWT", "bcrypt", "Recharts"],
+      live: "",
+      github: "", // paste the GitHub repo link here
+    },
+    {
+      type: "iOS app",
+      period: "November 2025",
+      title: "ExpenSave",
+      subtitle: "Budget Tracker App",
+      description:
+        "A native iOS personal finance app, built with Swift and the MVVM architecture for a clean, testable codebase.",
+      highlights: [
+        "Full CRUD for tracking transactions, managing custom expense categories, and setting monthly budgets.",
+        "Google Firebase authentication and Cloud Firestore, alongside Core Data, to store and sync relational data.",
+        "Dashboards that turn raw transactions into interactive pie charts and circular goal-tracking progress bars.",
+      ],
       tech: ["Swift", "MVVM", "Firebase Auth", "Cloud Firestore", "Core Data"],
       live: "",
-      github: "",
+      github: "", // paste the GitHub repo link here
     },
   ],
 
