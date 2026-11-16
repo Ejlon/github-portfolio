@@ -22,7 +22,7 @@ window.PORTFOLIO = {
   location: "Lucena City, Quezon Province, Philippines",
   badgeLocation: "Lucena City, PH",
   email: "labsojohnelon@gmail.com",
-  resume: "", // e.g. "assets/Labso-Resume.pdf" → adds a "Download résumé" button
+  resume: "assets/Labso-Resume.pdf", // e.g. "assets/Labso-Resume.pdf" → adds a "Download résumé" button
 
   hero:
     "I build web and mobile apps that are solid under the hood and simple to use. When I'm not coding, I'm usually fixing a motorcycle, out on a ride, or putting a PC together.",
@@ -67,18 +67,20 @@ window.PORTFOLIO = {
       github: "", // add the GitHub repo link here
     },
     {
-      type: "Personal project",
-      title: "", // TODO: project name
-      description: "", // TODO: one-line description
-      tech: [], // e.g. ["React", "Supabase"]
+      type: "Personal project · Ongoing",
+      title: "TindaTrack",
+      description:
+        "A multi-branch inventory and point-of-sale web app for grocery stores. Stock moves between the central warehouse and each branch inside SQL transactions, so counts never drift, and role-based dashboards chart sales, revenue, and profit.",
+      tech: ["React.js", "Node.js", "Express.js", "MySQL", "JWT", "Recharts"],
       live: "",
       github: "",
     },
     {
-      type: "Personal project",
-      title: "", // TODO: project name
-      description: "", // TODO: one-line description
-      tech: [],
+      type: "iOS app · 2025",
+      title: "ExpenSave",
+      description:
+        "A native iOS budget tracker. Log transactions, set custom categories and monthly budgets, and see spending as pie charts and goal-progress rings.",
+      tech: ["Swift", "MVVM", "Firebase Auth", "Cloud Firestore", "Core Data"],
       live: "",
       github: "",
     },
