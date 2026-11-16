@@ -617,11 +617,21 @@ h3 {
 }
 .btn-soon:active { transform: none; }
 
+/* Projects use the full width so three cards fit side by side */
+#projects { grid-template-columns: 1fr; }
+#projects .section-head h2 { position: static; }
+
 .project-grid {
-  margin-top: 20px;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 20px;
+}
+.project-grid:not(:first-child) { margin-top: 20px; }
+@media (max-width: 1020px) {
+  .project-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 680px) {
+  .project-grid { grid-template-columns: 1fr; }
 }
 .project-card {
   padding: 24px;

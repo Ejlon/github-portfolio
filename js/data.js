@@ -45,35 +45,12 @@ window.PORTFOLIO = {
   ],
 
   /* ---------- Projects ----------
-     The first one with featured: true gets the big layout.
+     Shown as equal cards in this order (put the newest first).
      highlights = the bullet points shown on each card.
      github: paste the repo link to turn the "Code coming soon" label
      into a working "View code on GitHub" button.
      live: add a link to show a "Live site" button. */
   projects: [
-    {
-      featured: true,
-      type: "Capstone thesis",
-      period: "February 2026 – Present",
-      title: "WEVA",
-      subtitle: "Agentic Runtime Application Security Framework: Behavioral Threat Detection",
-      description:
-        "A behavioral security layer for a student information system. It watches how each user and device acts and responds in proportion to the risk, stopping brute-force and automated attacks without getting in the way of real students.",
-      steps: [
-        "Identifies each device before it logs in",
-        "Scores its live traffic over time and flags risky patterns",
-        "Allows, logs, throttles, or blocks the request",
-      ],
-      highlights: [
-        "Behavioral profiling layer that scores live network traffic per user with an exponential moving average (EMA), flagging brute-force, DoS, and DDoS patterns in real time.",
-        "Hexagonal Architecture (ports and adapters) keeps the threat-detection logic independent of the Express.js routes and the Prisma/PostgreSQL data layer.",
-        "Hardened cryptography: CSPRNG-based OTP generation, constant-time secret comparison with timingSafeEqual, and AES-256-GCM encryption for data at rest.",
-      ],
-      note: "Built with a team of three at MSEUF.",
-      tech: ["Node.js", "Express.js", "PostgreSQL", "Prisma ORM", "JWT", "AES-256-GCM"],
-      live: "",
-      github: "", // paste the GitHub repo link here
-    },
     {
       type: "Full-stack web app",
       period: "Ongoing",
@@ -87,6 +64,23 @@ window.PORTFOLIO = {
         "Recharts dashboards that show real-time sales, revenue, and profit for each role.",
       ],
       tech: ["React.js", "Node.js", "Express.js", "MySQL", "JWT", "bcrypt", "Recharts"],
+      live: "",
+      github: "https://github.com/Ejlon/tindatrack",
+    },
+    {
+      type: "Capstone thesis",
+      period: "February 2026 – Present",
+      title: "WEVA",
+      subtitle: "Agentic Runtime Application Security Framework: Behavioral Threat Detection",
+      description:
+        "A behavioral security layer for a student information system. It watches how each user and device acts and responds in proportion to the risk, stopping brute-force and automated attacks without getting in the way of real students.",
+      highlights: [
+        "Behavioral profiling layer that scores live network traffic per user with an exponential moving average (EMA), flagging brute-force, DoS, and DDoS patterns in real time.",
+        "Hexagonal Architecture (ports and adapters) keeps the threat-detection logic independent of the Express.js routes and the Prisma/PostgreSQL data layer.",
+        "Hardened cryptography: CSPRNG-based OTP generation, constant-time secret comparison with timingSafeEqual, and AES-256-GCM encryption for data at rest.",
+      ],
+      note: "Built with a team of three at MSEUF.",
+      tech: ["Node.js", "Express.js", "PostgreSQL", "Prisma ORM", "JWT", "AES-256-GCM"],
       live: "",
       github: "", // paste the GitHub repo link here
     },

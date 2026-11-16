@@ -136,7 +136,9 @@
           (has(p.subtitle) ? '<p class="project-sub">' + esc(p.subtitle) + "</p>" : "") +
           (has(p.description) ? '<p class="project-desc">' + esc(p.description) + "</p>" : "") +
           highlights(p) +
-          chips(p.tech) + links(p) + "</article>";
+          chips(p.tech) +
+          (has(p.note) ? '<p class="project-note">' + esc(p.note) + "</p>" : "") +
+          links(p) + "</article>";
       }).join("");
       if (pending) html += '<div class="project-soon"><p>More projects are on the way.</p></div>';
       html += "</div>";
