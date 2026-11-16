@@ -346,6 +346,35 @@
     });
   })();
 
+  /* ---------- Menu highlight: shows which section you're in ---------- */
+  (function scrollspy() {
+    var links = Array.prototype.slice.call(document.querySelectorAll("#nav-links a"));
+    var items = links.map(function (a) {
+      return { link: a, section: document.querySelector(a.getAttribute("href")) };
+    }).filter(function (it) { return it.section && !it.section.hidden; });
+    var current = null, ticking = false;
+
+    var update = function () {
+      ticking = false;
+      var line = window.innerHeight * 0.35;
+      var found = null;
+      items.forEach(function (it) {
+        if (it.section.getBoundingClientRect().top <= line) found = it;
+      });
+      // at the very bottom, the last section counts as current
+      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) found = items[items.length - 1];
+      if (found === current) return;
+      if (current) { current.link.classList.remove("active"); current.link.removeAttribute("aria-current"); }
+      current = found;
+      if (current) { current.link.classList.add("active"); current.link.setAttribute("aria-current", "true"); }
+    };
+    window.addEventListener("scroll", function () {
+      if (!ticking) { ticking = true; requestAnimationFrame(update); }
+    }, { passive: true });
+    window.addEventListener("resize", update);
+    update();
+  })();
+
   /* ---------- Intro (once per visit) ---------- */
   (function intro() {
     var el = $("intro");
