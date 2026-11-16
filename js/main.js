@@ -56,7 +56,7 @@
     $("hero-lede").textContent = D.hero;
 
     var actions = '<a class="btn btn-primary" href="mailto:' + esc(D.email) + '">Email me</a>' +
-      '<a class="btn btn-ghost" href="#projects">See projects</a>';
+      '<a class="btn btn-ghost" href="#portfolio">See my work</a>';
     if (has(D.resume)) actions += '<a class="btn btn-ghost" href="' + esc(D.resume) + '" download>Download résumé</a>';
     $("hero-actions").innerHTML = actions;
     $("hero-loc").innerHTML = icon("pin") + "<span>" + esc(D.location) + "</span>";
@@ -66,7 +66,7 @@
     // Photo in the glowing frame
     var portrait = has(D.portrait) ? D.portrait : D.photo;
     $("hero-photo").innerHTML = has(portrait)
-      ? '<img src="' + esc(portrait) + '" alt="Photo of ' + esc(D.name) + '" width="800" height="1000" fetchpriority="high">'
+      ? '<img src="' + esc(portrait) + '" alt="Photo of ' + esc(D.name) + '" width="800" height="1000" loading="lazy">'
       : "<span>" + esc(D.initials) + "</span>";
     $("photo-caption").textContent = D.roles[0];
 
@@ -241,7 +241,7 @@
   /* ---------- Certificates (preview cards + viewer) ---------- */
   (function certificates() {
     var groups = (D.certificates || []).filter(function (g) { return g.items && g.items.length; });
-    if (!groups.length) { hideSection("certificates"); return; }
+    if (!groups.length) { $("pf-tab-certificates").hidden = true; return; }
     var all = [];
     var thumb = function (src) { return src.indexOf("assets/certs/") === 0 ? src.replace("assets/certs/", "assets/certs/thumb/") : src; };
     var ARROW = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>';
@@ -420,6 +420,37 @@
     links.addEventListener("click", function (e) { if (e.target.closest("a")) setOpen(false); });
     document.addEventListener("keydown", function (e) {
       if (e.key === "Escape" && links.classList.contains("open")) { setOpen(false); toggle.focus(); }
+    });
+  })();
+
+  /* ---------- Portfolio tabs: Projects / Certificates / Tech Stack ---------- */
+  (function portfolioTabs() {
+    var tabs = Array.prototype.slice.call(document.querySelectorAll("#pf-tabs .pf-tab")).filter(function (t) { return !t.hidden; });
+    var select = function (i, focus) {
+      tabs.forEach(function (t, j) {
+        var on = i === j;
+        t.setAttribute("aria-selected", on);
+        t.tabIndex = on ? 0 : -1;
+        var panel = $(t.getAttribute("aria-controls"));
+        panel.hidden = !on;
+        if (on) {
+          // anything waiting for its scroll reveal shows straight away
+          Array.prototype.forEach.call(panel.querySelectorAll(".reveal"), function (el) { el.classList.add("in"); });
+          panel.classList.remove("swap-in"); void panel.offsetWidth; panel.classList.add("swap-in");
+        }
+      });
+      if (focus) tabs[i].focus();
+    };
+    tabs.forEach(function (t, i) {
+      t.addEventListener("click", function () { select(i, false); });
+      t.addEventListener("keydown", function (e) {
+        var n = tabs.length, to = null;
+        if (e.key === "ArrowRight") to = (i + 1) % n;
+        else if (e.key === "ArrowLeft") to = (i - 1 + n) % n;
+        else if (e.key === "Home") to = 0;
+        else if (e.key === "End") to = n - 1;
+        if (to !== null) { e.preventDefault(); select(to, true); }
+      });
     });
   })();
 

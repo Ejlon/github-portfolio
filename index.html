@@ -52,11 +52,9 @@
       <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links">Menu</button>
       <ul class="nav-links" id="nav-links">
         <li><a href="#about">About</a></li>
-        <li><a href="#projects">Projects</a></li>
+        <li><a href="#portfolio">Portfolio</a></li>
         <li data-for="experience"><a href="#experience">Experience</a></li>
-        <li><a href="#skills">Skills</a></li>
         <li><a href="#education">Education</a></li>
-        <li><a href="#certificates">Certificates</a></li>
         <li data-for="achievements"><a href="#achievements">Achievements</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
@@ -79,13 +77,34 @@
         <ul class="hero-socials" id="hero-socials"></ul>
       </div>
 
-      <figure class="photo-frame" id="photo-frame">
-        <div class="photo-glow" aria-hidden="true"></div>
-        <div class="photo-inner" id="hero-photo"></div>
-        <span class="corner tl" aria-hidden="true"></span><span class="corner tr" aria-hidden="true"></span>
-        <span class="corner bl" aria-hidden="true"></span><span class="corner br" aria-hidden="true"></span>
-        <figcaption id="photo-caption"></figcaption>
-      </figure>
+      <div class="board" id="board">
+        <svg class="board-svg" id="board-svg" aria-hidden="true">
+          <path class="strap-shadow" id="strap-shadow" />
+          <path class="strap-edge" id="strap-edge" />
+          <path class="strap-face" id="strap-face" />
+          <text class="strap-text"><textPath href="#strap-face" id="strap-text" startOffset="14"></textPath></text>
+          <g id="hook"></g>
+        </svg>
+
+        <div class="badge" id="badge" tabindex="0" role="img">
+          <div class="badge-clip" aria-hidden="true"></div>
+          <div class="badge-card" aria-hidden="true">
+            <div class="badge-band"><span class="badge-slot"></span><small>Portfolio</small></div>
+            <div class="badge-body">
+              <div class="badge-photo" id="badge-photo"></div>
+              <p class="badge-name" id="badge-name"></p>
+              <p class="badge-full" id="badge-full"></p>
+              <p class="badge-role" id="badge-role"></p>
+            </div>
+            <div class="badge-foot">
+              <svg id="badge-barcode" viewBox="0 0 120 32" preserveAspectRatio="none"></svg>
+              <span id="badge-loc"></span>
+            </div>
+          </div>
+        </div>
+
+        <p class="board-hint" id="board-hint">Drag the badge</p>
+      </div>
 
       <a class="scroll-cue" href="#about" aria-label="Scroll to About"><span aria-hidden="true"></span></a>
     </section>
@@ -106,44 +125,46 @@
           <p class="hero-loc" id="hero-loc"></p>
         </div>
 
-        <div class="board" id="board">
-          <svg class="board-svg" id="board-svg" aria-hidden="true">
-            <path class="strap-shadow" id="strap-shadow" />
-            <path class="strap-edge" id="strap-edge" />
-            <path class="strap-face" id="strap-face" />
-            <text class="strap-text"><textPath href="#strap-face" id="strap-text" startOffset="14"></textPath></text>
-            <g id="hook"></g>
-          </svg>
-
-          <div class="badge" id="badge" tabindex="0" role="img">
-            <div class="badge-clip" aria-hidden="true"></div>
-            <div class="badge-card" aria-hidden="true">
-              <div class="badge-band"><span class="badge-slot"></span><small>Portfolio</small></div>
-              <div class="badge-body">
-                <div class="badge-photo" id="badge-photo"></div>
-                <p class="badge-name" id="badge-name"></p>
-                <p class="badge-full" id="badge-full"></p>
-                <p class="badge-role" id="badge-role"></p>
-              </div>
-              <div class="badge-foot">
-                <svg id="badge-barcode" viewBox="0 0 120 32" preserveAspectRatio="none"></svg>
-                <span id="badge-loc"></span>
-              </div>
-            </div>
-          </div>
-
-          <p class="board-hint" id="board-hint">Drag the badge</p>
-        </div>
+        <figure class="photo-frame about-photo" id="photo-frame">
+          <div class="photo-glow" aria-hidden="true"></div>
+          <div class="photo-inner" id="hero-photo"></div>
+          <span class="corner tl" aria-hidden="true"></span><span class="corner tr" aria-hidden="true"></span>
+          <span class="corner bl" aria-hidden="true"></span><span class="corner br" aria-hidden="true"></span>
+          <figcaption id="photo-caption"></figcaption>
+        </figure>
       </div>
     </section>
 
-    <!-- PROJECTS -->
-    <section class="section" id="projects" aria-labelledby="projects-title">
+    <!-- PORTFOLIO: projects, certificates and tech stack in one tabbed section -->
+    <section class="section" id="portfolio" aria-labelledby="portfolio-title">
       <header class="section-head">
-        <p class="kicker">Things I've built</p>
-        <h2 class="mega" id="projects-title" data-text="Projects">Projects</h2>
+        <p class="kicker">My work</p>
+        <h2 class="mega" id="portfolio-title" data-text="Portfolio">Portfolio</h2>
       </header>
-      <div id="projects-list"></div>
+
+      <div class="pf-tabs-wrap">
+        <div class="pf-tabs" role="tablist" aria-label="Portfolio" id="pf-tabs">
+          <button class="pf-tab" role="tab" type="button" id="pf-tab-projects" aria-controls="pf-projects" aria-selected="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8 8-4 4 4 4M16 8l4 4-4 4"/></svg>Projects
+          </button>
+          <button class="pf-tab" role="tab" type="button" id="pf-tab-certificates" aria-controls="pf-certificates" aria-selected="false" tabindex="-1">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="9" r="6"/><path d="m8.5 13.8-1.5 7.2 5-2.6 5 2.6-1.5-7.2"/></svg>Certificates
+          </button>
+          <button class="pf-tab" role="tab" type="button" id="pf-tab-stack" aria-controls="pf-stack" aria-selected="false" tabindex="-1">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 9 5-9 5-9-5 9-5z"/><path d="m3 13 9 5 9-5"/></svg>Tech Stack
+          </button>
+        </div>
+      </div>
+
+      <div class="pf-panel" role="tabpanel" id="pf-projects" aria-labelledby="pf-tab-projects" tabindex="0">
+        <div id="projects-list"></div>
+      </div>
+      <div class="pf-panel" role="tabpanel" id="pf-certificates" aria-labelledby="pf-tab-certificates" tabindex="0" hidden>
+        <div id="cert-groups"></div>
+      </div>
+      <div class="pf-panel" role="tabpanel" id="pf-stack" aria-labelledby="pf-tab-stack" tabindex="0" hidden>
+        <div class="skill-grid" id="skills-list"></div>
+      </div>
     </section>
 
     <!-- EXPERIENCE (hidden when empty) -->
@@ -155,15 +176,6 @@
       <ol class="timeline" id="experience-list"></ol>
     </section>
 
-    <!-- SKILLS -->
-    <section class="section" id="skills" aria-labelledby="skills-title">
-      <header class="section-head">
-        <p class="kicker">What I work with</p>
-        <h2 class="mega" id="skills-title" data-text="Skills">Skills</h2>
-      </header>
-      <div class="skill-grid" id="skills-list"></div>
-    </section>
-
     <!-- EDUCATION -->
     <section class="section" id="education" aria-labelledby="education-title">
       <header class="section-head">
@@ -171,15 +183,6 @@
         <h2 class="mega" id="education-title" data-text="Education">Education</h2>
       </header>
       <ol class="timeline" id="education-list"></ol>
-    </section>
-
-    <!-- CERTIFICATES -->
-    <section class="section" id="certificates" aria-labelledby="certificates-title">
-      <header class="section-head">
-        <p class="kicker">What I've completed</p>
-        <h2 class="mega" id="certificates-title" data-text="Certificates">Certificates</h2>
-      </header>
-      <div id="cert-groups"></div>
     </section>
 
     <!-- ACHIEVEMENTS (hidden when empty) -->
