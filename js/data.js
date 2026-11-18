@@ -22,8 +22,8 @@ window.PORTFOLIO = {
   roles: ["Software Developer", "UI Designer"],
   // the hero types these out one after another
   typedRoles: ["Software Developer", "UI Designer", "Full-Stack Web Developer", "iOS Developer"],
-  location: "Lucena City, Quezon Province, Philippines",
-  badgeLocation: "Lucena City, PH",
+  location: "Mauban, Quezon Province, Philippines",
+  badgeLocation: "Mauban, PH",
   email: "labsojohnelon@gmail.com",
   resume: "assets/Labso-Resume.pdf", // e.g. "assets/Labso-Resume.pdf" → adds a "Resume" button
 
@@ -35,12 +35,6 @@ window.PORTFOLIO = {
     "I enjoy learning new things, and I learn best by taking something apart to see how it works, whether that's a codebase, an engine, or a computer. That habit carries into my work: I like software that's well put together on the inside and easy to use on the outside.",
   ],
 
-  // icon options: "wrench", "wheel", "chip"
-  offKeyboard: [
-    { icon: "wrench", text: "Fixing motorcycles, cars, and just about anything that's broken" },
-    { icon: "wheel", text: "Riding motorcycles and taking cars out on the road" },
-    { icon: "chip", text: "Building desktop PCs from parts" },
-  ],
 
   socials: [
     { label: "GitHub", handle: "Ejlon", url: "https://github.com/Ejlon" },

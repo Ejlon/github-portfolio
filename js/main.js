@@ -43,9 +43,9 @@
     return '<svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + d + "</svg>";
   };
   var BTN_ICON = {
-    mail: svgI('<path d="M7 17 17 7M8 7h9v9"/>'),
+    mail: svgI('<path d="M21.5 2.5 10.7 13.3"/><path d="M21.5 2.5 15 21l-4.3-7.7L3 9l18.5-6.5z"/>'),
     next: svgI('<path d="M5 12h14M13 6l6 6-6 6"/>'),
-    file: svgI('<path d="M12 4v11M7 10l5 5 5-5M5 20h14"/>')
+    file: svgI('<path d="M14 2.5H7A2.5 2.5 0 0 0 4.5 5v14A2.5 2.5 0 0 0 7 21.5h10a2.5 2.5 0 0 0 2.5-2.5V8L14 2.5z"/><path d="M14 2.5V8h5.5M8.5 13h7M8.5 17h5"/>')
   };
   var trailBtn = function (cls, href, label, iconKey, extra) {
     return '<a class="btn ' + cls + ' btn-trail" href="' + esc(href) + '"' + (extra || "") + ">" + label + BTN_ICON[iconKey] + "</a>";
@@ -136,13 +136,23 @@
 
   /* ---------- About ---------- */
   $("about-text").innerHTML = D.about.map(function (p) { return "<p>" + esc(p) + "</p>"; }).join("");
-  if (D.offKeyboard && D.offKeyboard.length) {
-    $("offkb-list").innerHTML = D.offKeyboard.map(function (h) {
-      return "<li>" + icon(h.icon) + "<span>" + esc(h.text) + "</span></li>";
-    }).join("");
-  } else {
-    document.querySelector(".offkb").hidden = true;
-  }
+
+  /* ---------- Totals under About (counted from the data, so they stay right) ---------- */
+  (function stats() {
+    var projects = (D.projects || []).filter(function (p) { return has(p.title); }).length;
+    var certs = (D.certificates || []).reduce(function (n, g) { return n + (g.items ? g.items.length : 0); }, 0);
+    var card = function (n, label, sub, iconSvg, tab) {
+      return '<a class="stat" href="#portfolio" data-pf-tab="' + tab + '">' +
+        '<span class="stat-num">' + n + "</span>" +
+        '<span class="stat-text"><span class="stat-label">' + label + '</span><span class="stat-sub">' + sub + "</span></span>" +
+        '<span class="stat-icon">' + iconSvg + "</span></a>";
+    };
+    var AWARD = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="9" r="6"/><path d="m8.5 13.8-1.5 7.2 5-2.6 5 2.6-1.5-7.2"/></svg>';
+    var CODE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8 8-4 4 4 4M16 8l4 4-4 4"/></svg>';
+    $("about-stats").innerHTML =
+      card(projects, "Projects", "Things I have built", CODE, "pf-tab-projects") +
+      card(certs, "Certificates", "Skills validated", AWARD, "pf-tab-certificates");
+  })();
 
   /* ---------- Projects ---------- */
   (function projects() {
@@ -275,8 +285,8 @@
         "</span></div></div></article>";
     };
 
-    // One tab per group (Specializations, Courses…); only the chosen group shows
-    var multi = groups.length > 1;
+    // One heading + card grid per group
+    var multi = false; // groups are stacked with a heading each (Specializations, Courses)
     $("cert-groups").innerHTML =
       (multi ? '<div class="cert-tabs-wrap"><div class="tabs" role="tablist" aria-label="Certificate type">' +
         groups.map(function (grp, i) {
@@ -374,7 +384,7 @@
     mail.textContent = D.email;
 
     var fa = trailBtn("btn-primary", "mailto:" + D.email, "Email me", "mail");
-    if (has(D.resume)) fa += trailBtn("btn-ghost", D.resume, "Resume", "file", " download");
+    if (has(D.resume)) fa += trailBtn("btn-ghost", D.resume, "Download Resume", "file", " download");
     $("finale-actions").insertAdjacentHTML("afterbegin", fa);
 
     var rows = '<li><span>Location</span><p>' + esc(D.location) + "</p></li>";
@@ -383,36 +393,6 @@
     }).join("");
     $("contact-list").innerHTML = rows;
 
-    var btn = $("copy-email");
-    var label = btn.textContent;
-    var flash = function (text) {
-      btn.textContent = text;
-      clearTimeout(flash.t);
-      flash.t = setTimeout(function () { btn.textContent = label; }, 2200);
-    };
-    var fallback = function () {
-      var ta = document.createElement("textarea");
-      ta.value = D.email;
-      ta.setAttribute("readonly", "");
-      ta.style.position = "fixed";
-      ta.style.opacity = "0";
-      document.body.appendChild(ta);
-      ta.select();
-      var ok = false;
-      try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
-      document.body.removeChild(ta);
-      return ok;
-    };
-    btn.setAttribute("aria-live", "polite");
-    btn.addEventListener("click", function () {
-      if (navigator.clipboard && window.isSecureContext) {
-        navigator.clipboard.writeText(D.email).then(function () { flash("Copied"); }, function () {
-          flash(fallback() ? "Copied" : "Select the address above to copy it");
-        });
-      } else {
-        flash(fallback() ? "Copied" : "Select the address above to copy it");
-      }
-    });
   })();
 
   $("footer-name").textContent = "© " + new Date().getFullYear() + " " + D.name;
@@ -583,7 +563,7 @@
   (function reveal() {
     if (reduceMotion || !("IntersectionObserver" in window)) return;
     var groups = [
-      ".section-head .kicker", ".section-head .mega", ".about-grid > *", ".project-card",
+      ".section-head .kicker", ".section-head .mega", ".about-grid > *", ".stat", ".project-card",
       ".skill-card", ".timeline li", ".cert-card", ".finale > *"
     ];
     var els = document.querySelectorAll(groups.join(","));
