@@ -37,6 +37,19 @@
     linkedin: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9.75h4v11H3zM9.5 9.75h3.8v1.5h.06c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.77 2.65 4.77 6.1v5.45h-4v-4.83c0-1.15-.02-2.63-1.6-2.63-1.6 0-1.85 1.25-1.85 2.55v4.91h-4z"/></svg>'
   };
   var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // Small icons that sit after a button's text
+  var svgI = function (d) {
+    return '<svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + d + "</svg>";
+  };
+  var BTN_ICON = {
+    mail: svgI('<path d="M7 17 17 7M8 7h9v9"/>'),
+    next: svgI('<path d="M5 12h14M13 6l6 6-6 6"/>'),
+    file: svgI('<path d="M12 4v11M7 10l5 5 5-5M5 20h14"/>')
+  };
+  var trailBtn = function (cls, href, label, iconKey, extra) {
+    return '<a class="btn ' + cls + ' btn-trail" href="' + esc(href) + '"' + (extra || "") + ">" + label + BTN_ICON[iconKey] + "</a>";
+  };
   var icon = function (name) {
     return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + (ICONS[name] || ICONS.wrench) + "</svg>";
   };
@@ -55,9 +68,9 @@
     $("hero-role-static").textContent = D.roles.join(" and ");
     $("hero-lede").textContent = D.hero;
 
-    var actions = '<a class="btn btn-primary" href="mailto:' + esc(D.email) + '">Email me</a>' +
-      '<a class="btn btn-ghost" href="#portfolio">See my work</a>';
-    if (has(D.resume)) actions += '<a class="btn btn-ghost" href="' + esc(D.resume) + '" download>Download résumé</a>';
+    var actions = trailBtn("btn-primary", "mailto:" + D.email, "Email me", "mail") +
+      trailBtn("btn-ghost", "#portfolio", "View projects", "next", ' data-pf-tab="pf-tab-projects"');
+    if (has(D.resume)) actions += trailBtn("btn-ghost", D.resume, "Resume", "file", " download");
     $("hero-actions").innerHTML = actions;
     $("hero-loc").innerHTML = icon("pin") + "<span>" + esc(D.location) + "</span>";
     $("wordmark").textContent = D.shortName;
@@ -249,7 +262,7 @@
     var card = function (c) {
       var i = all.push(c) - 1;
       var img = has(c.image)
-        ? '<button class="cert-thumb" type="button" data-cert="' + i + '" aria-label="View ' + esc(c.name) + ' certificate">' +
+        ? '<button class="cert-thumb" type="button" data-cert="' + i + '" data-cursor="View" aria-label="View ' + esc(c.name) + ' certificate">' +
           '<img src="' + esc(thumb(c.image)) + '" alt="" width="720" height="556" loading="lazy" decoding="async"></button>'
         : "";
       return '<article class="cert-card">' + img +
@@ -360,8 +373,8 @@
     mail.href = "mailto:" + D.email;
     mail.textContent = D.email;
 
-    var fa = '<a class="btn btn-primary" href="mailto:' + esc(D.email) + '">Email me</a>';
-    if (has(D.resume)) fa += '<a class="btn btn-ghost" href="' + esc(D.resume) + '" download>Download résumé</a>';
+    var fa = trailBtn("btn-primary", "mailto:" + D.email, "Email me", "mail");
+    if (has(D.resume)) fa += trailBtn("btn-ghost", D.resume, "Resume", "file", " download");
     $("finale-actions").insertAdjacentHTML("afterbegin", fa);
 
     var rows = '<li><span>Location</span><p>' + esc(D.location) + "</p></li>";
@@ -441,6 +454,13 @@
       });
       if (focus) tabs[i].focus();
     };
+    // links like "View projects" choose a tab before scrolling to the section
+    document.addEventListener("click", function (e) {
+      var a = e.target.closest && e.target.closest("[data-pf-tab]");
+      if (!a) return;
+      var i = tabs.indexOf($(a.getAttribute("data-pf-tab")));
+      if (i > -1) select(i, false);
+    });
     tabs.forEach(function (t, i) {
       t.addEventListener("click", function () { select(i, false); });
       t.addEventListener("keydown", function (e) {
@@ -539,27 +559,66 @@
     });
   })();
 
-  /* ---------- Custom cursor (mouse only) ---------- */
+  /* ---------- Custom cursor (mouse only) ----------
+     A dot that sits exactly on the pointer and a ring that trails it.
+     The ring eases toward the pointer at the same speed on any screen
+     refresh rate. Add data-cursor="Word" to any element to show a label. */
   (function cursor() {
     if (reduceMotion || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+    var root = document.documentElement;
     var dot = document.createElement("div"), ring = document.createElement("div");
     dot.className = "cursor-dot"; ring.className = "cursor-ring";
+    dot.innerHTML = "<span></span>";
+    ring.innerHTML = '<div class="ring"><span class="label"></span></div>';
     dot.setAttribute("aria-hidden", "true"); ring.setAttribute("aria-hidden", "true");
     document.body.appendChild(dot); document.body.appendChild(ring);
-    var mx = -100, my = -100, rx = -100, ry = -100, raf = 0;
-    var loop = function () {
-      rx += (mx - rx) * 0.2; ry += (my - ry) * 0.2;
-      ring.style.transform = "translate3d(" + rx.toFixed(1) + "px," + ry.toFixed(1) + "px,0)";
-      raf = Math.abs(mx - rx) + Math.abs(my - ry) > 0.3 ? requestAnimationFrame(loop) : 0;
+    var label = ring.querySelector(".label");
+
+    // words for things you can do something special with
+    var badge = $("badge");
+    if (badge) badge.setAttribute("data-cursor", "Drag");
+
+    var mx = -100, my = -100, rx = -100, ry = -100, raf = 0, last = 0, state = "";
+    var loop = function (t) {
+      var dt = Math.min(0.05, last ? (t - last) / 1000 : 0.016);
+      last = t;
+      var k = 1 - Math.exp(-dt * 22); // ~same feel at 60Hz and 120Hz
+      rx += (mx - rx) * k; ry += (my - ry) * k;
+      ring.style.transform = "translate3d(" + rx.toFixed(2) + "px," + ry.toFixed(2) + "px,0)";
+      if (Math.abs(mx - rx) + Math.abs(my - ry) > 0.1) raf = requestAnimationFrame(loop);
+      else { raf = 0; last = 0; }
     };
+    var setState = function (next, word) {
+      if (word) label.textContent = word;
+      if (next === state) return;
+      state = next;
+      if (next) { ring.setAttribute("data-state", next); dot.setAttribute("data-state", next); }
+      else { ring.removeAttribute("data-state"); dot.removeAttribute("data-state"); }
+    };
+
     document.addEventListener("mousemove", function (e) {
       mx = e.clientX; my = e.clientY;
       dot.style.transform = "translate3d(" + mx + "px," + my + "px,0)";
-      document.documentElement.classList.add("has-cursor");
+      if (!root.classList.contains("has-cursor")) {
+        rx = mx; ry = my; // first move: start the ring under the pointer, no fly-in
+        ring.style.transform = "translate3d(" + rx + "px," + ry + "px,0)";
+        root.classList.add("has-cursor");
+      }
+      root.classList.remove("cursor-away");
       if (!raf) raf = requestAnimationFrame(loop);
-      ring.classList.toggle("hover", !!(e.target.closest && e.target.closest("a, button, .badge, [role=tab]")));
+
+      var t = e.target.closest ? e.target : null;
+      var tagged = t && t.closest("[data-cursor]");
+      if (tagged && !(badge && badge.classList.contains("dragging") && tagged !== badge)) setState("label", tagged.getAttribute("data-cursor"));
+      else if (t && t.closest("a, button, [role=tab], label")) setState("link");
+      else setState("");
     }, { passive: true });
-    document.addEventListener("mouseleave", function () { document.documentElement.classList.remove("has-cursor"); });
+
+    document.addEventListener("mousedown", function () { ring.classList.add("down"); });
+    document.addEventListener("mouseup", function () { ring.classList.remove("down"); });
+    // hide when the pointer leaves the window, show again when it returns
+    document.addEventListener("mouseout", function (e) { if (!e.relatedTarget) root.classList.add("cursor-away"); });
+    window.addEventListener("blur", function () { root.classList.add("cursor-away"); ring.classList.remove("down"); });
   })();
 
   /* =======================================================================

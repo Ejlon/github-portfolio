@@ -25,7 +25,7 @@ window.PORTFOLIO = {
   location: "Lucena City, Quezon Province, Philippines",
   badgeLocation: "Lucena City, PH",
   email: "labsojohnelon@gmail.com",
-  resume: "assets/Labso-Resume.pdf", // e.g. "assets/Labso-Resume.pdf" → adds a "Download résumé" button
+  resume: "assets/Labso-Resume.pdf", // e.g. "assets/Labso-Resume.pdf" → adds a "Resume" button
 
   hero:
     "I build web and mobile apps that are solid under the hood and simple to use. When I'm not coding, I'm usually fixing a motorcycle, out on a ride, or putting a PC together.",
