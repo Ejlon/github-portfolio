@@ -112,7 +112,7 @@
     $("badge").setAttribute("aria-label", "ID badge for " + D.name + ", " + D.roles.join(" and ") + ". Drag it, or press Enter to swing it.");
     var badgePic = has(D.badgePhoto) ? D.badgePhoto : D.photo;
     $("badge-photo").innerHTML = has(badgePic)
-      ? '<img src="' + esc(badgePic) + '" alt="" width="520" height="650" draggable="false">'
+      ? '<img src="' + esc(badgePic) + '" alt="" width="520" height="610" draggable="false">'
       : "<span>" + esc(D.initials) + "</span>";
     $("badge-full").textContent = D.name;
 

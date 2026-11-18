@@ -40,9 +40,22 @@
   <div class="intro" id="intro" aria-hidden="true">
     <div class="intro-glow"></div>
     <div class="intro-stage">
-      <div class="intro-mark"><span>JL</span></div>
-      <p class="intro-name"><span style="--i:0">E</span><span style="--i:1">L</span><span style="--i:2">O</span><span style="--i:3">N</span></p>
-      <p class="intro-tag"><span style="--i:0">S</span><span style="--i:1">O</span><span style="--i:2">F</span><span style="--i:3">T</span><span style="--i:4">W</span><span style="--i:5">A</span><span style="--i:6">R</span><span style="--i:7">E</span><span style="--i:8">&nbsp;</span><span style="--i:9">D</span><span style="--i:10">E</span><span style="--i:11">V</span><span style="--i:12">E</span><span style="--i:13">L</span><span style="--i:14">O</span><span style="--i:15">P</span><span style="--i:16">E</span><span style="--i:17">R</span></p>
+      <svg class="intro-logo" viewBox="0 0 120 120" aria-hidden="true">
+        <defs>
+          <linearGradient id="intro-g" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#FFB27A"/>
+            <stop offset="0.5" stop-color="#FF7A1A"/>
+            <stop offset="1" stop-color="#E85D0C"/>
+          </linearGradient>
+        </defs>
+        <path class="lg-hex" pathLength="1" d="M60 6 107 33v54L60 114 13 87V33z" fill="none" stroke="url(#intro-g)" stroke-width="4" stroke-linejoin="round"/>
+        <g fill="url(#intro-g)" transform="translate(0 -4)">
+          <path class="lg-j" d="M38 34h20v38a16 16 0 0 1-32 0v-6h11v6a5 5 0 0 0 10 0V45h-9z"/>
+          <path class="lg-l" d="M64 34h11v49h19v11H64z"/>
+        </g>
+      </svg>
+      <p class="intro-name"><span style="animation-delay:0.950s">E</span><span style="animation-delay:1.040s">L</span><span style="animation-delay:1.130s">O</span><span style="animation-delay:1.220s">N</span></p>
+      <p class="intro-tag"><span style="animation-delay:1.550s">S</span><span style="animation-delay:1.590s">O</span><span style="animation-delay:1.630s">F</span><span style="animation-delay:1.670s">T</span><span style="animation-delay:1.710s">W</span><span style="animation-delay:1.750s">A</span><span style="animation-delay:1.790s">R</span><span style="animation-delay:1.830s">E</span><span style="animation-delay:1.870s">&nbsp;</span><span style="animation-delay:1.910s">D</span><span style="animation-delay:1.950s">E</span><span style="animation-delay:1.990s">V</span><span style="animation-delay:2.030s">E</span><span style="animation-delay:2.070s">L</span><span style="animation-delay:2.110s">O</span><span style="animation-delay:2.150s">P</span><span style="animation-delay:2.190s">E</span><span style="animation-delay:2.230s">R</span></p>
     </div>
     <p class="intro-skip">Click or press any key to skip</p>
   </div>
@@ -50,7 +63,7 @@
   <header class="site-header" id="site-header">
     <nav class="nav" aria-label="Main">
       <a class="logo" href="#top" aria-label="Back to top">
-        <span class="logo-mark" aria-hidden="true">JL</span>
+        <img class="logo-mark" src="assets/logo.svg" alt="" width="36" height="36">
         <span class="logo-word" id="wordmark">Elon</span>
       </a>
       <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links">Menu</button>

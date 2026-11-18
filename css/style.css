@@ -166,20 +166,30 @@ a:hover { text-decoration-thickness: 2px; }
 }
 .intro.done .intro-stage { transform: scale(1.06); filter: blur(10px); }
 
-.intro-mark {
-  width: 104px;
-  height: 104px;
-  display: grid;
-  place-items: center;
-  border-radius: 26px;
-  border: 1.5px solid var(--orange);
-  color: var(--orange);
-  font-size: 2.5rem;
-  font-weight: 800;
-  font-stretch: 125%;
-  letter-spacing: -0.02em;
-  box-shadow: 0 0 50px var(--glow), inset 0 0 28px rgba(255, 122, 26, 0.22);
-  animation: mark-in 1s 0.1s var(--ease-out) both;
+.intro-logo {
+  width: 112px;
+  height: 112px;
+  overflow: visible;
+  filter: drop-shadow(0 0 18px rgba(255, 122, 26, 0.55));
+}
+/* the hexagon draws itself, then J and L rise into it */
+.lg-hex {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: draw 1s 0.1s var(--ease-in-out) forwards;
+}
+.lg-j, .lg-l {
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: glyph-in 0.6s var(--ease-out) forwards;
+}
+.lg-j { animation-delay: 0.55s; }
+.lg-l { animation-delay: 0.7s; }
+@keyframes draw { to { stroke-dashoffset: 0; } }
+@keyframes glyph-in {
+  from { opacity: 0; transform: translateY(14px) scale(0.92); }
+  to { opacity: 1; transform: none; }
 }
 
 .intro-name {
@@ -196,7 +206,11 @@ a:hover { text-decoration-thickness: 2px; }
 }
 .intro-name span {
   display: inline-block;
-  animation: letter-in 0.7s calc(0.75s + var(--i) * 90ms) var(--ease-out) both;
+  opacity: 0;
+  animation-name: letter-in;
+  animation-duration: 0.7s;
+  animation-timing-function: var(--ease-out);
+  animation-fill-mode: forwards; /* each span sets its own animation-delay */
 }
 @keyframes letter-in {
   from { opacity: 0; transform: translateY(40%); filter: blur(10px); }
@@ -207,8 +221,8 @@ a:hover { text-decoration-thickness: 2px; }
   margin: 0;
   display: flex;
   color: var(--text);
-  font-size: clamp(0.75rem, 1.6vw, 0.9375rem);
-  font-weight: 500;
+  font-size: clamp(0.8125rem, 1.7vw, 1rem);
+  font-weight: 600;
   font-stretch: 125%;
   letter-spacing: 0.42em;
   margin-right: -0.42em;
@@ -216,11 +230,15 @@ a:hover { text-decoration-thickness: 2px; }
 }
 .intro-tag span {
   display: inline-block;
-  animation: type-in 0.2s calc(1.5s + var(--i) * 38ms) steps(1) both;
+  opacity: 0;
+  animation-name: type-in;
+  animation-duration: 0.18s;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards; /* each span sets its own animation-delay */
 }
 @keyframes type-in {
-  from { opacity: 0; }
-  to { opacity: 0.9; }
+  from { opacity: 0; transform: translateY(3px); }
+  to { opacity: 1; transform: none; }
 }
 
 .intro-skip {
@@ -372,15 +390,8 @@ a:hover { text-decoration-thickness: 2px; }
 .logo-mark {
   width: 36px;
   height: 36px;
-  display: grid;
-  place-items: center;
-  border-radius: 10px;
-  border: 1px solid rgba(255, 122, 26, 0.6);
-  color: var(--orange);
-  font-weight: 800;
-  font-stretch: 125%;
-  font-size: 0.875rem;
-  box-shadow: 0 0 18px rgba(255, 122, 26, 0.25);
+  flex: none;
+  filter: drop-shadow(0 0 8px rgba(255, 122, 26, 0.35));
 }
 .logo-word { font-weight: 800; font-stretch: 125%; font-size: 1.0625rem; }
 
@@ -931,7 +942,8 @@ h3 { margin: 0; font-stretch: 112%; font-weight: 700; line-height: 1.25; }
   top: 0;
   z-index: 2;
   width: 16em;
-  font-size: 15px;
+  /* sized like the reference: the card is about half the screen height */
+  font-size: clamp(14px, 2.15vh, 22px);
   transform-origin: 50% 0;
   cursor: grab;
   touch-action: none;
@@ -944,7 +956,7 @@ h3 { margin: 0; font-stretch: 112%; font-weight: 700; line-height: 1.25; }
 .badge.ready { visibility: visible; }
 .badge.dragging { cursor: grabbing; }
 .badge:focus-visible { outline-offset: 6px; border-radius: 0.8em; }
-@media (max-width: 860px) { .badge { font-size: 12.5px; } }
+@media (max-width: 860px) { .badge { font-size: clamp(12.5px, 3.6vw, 15px); } }
 
 /* metal clip + swivel ring the strap goes into */
 .badge-clip {
@@ -1045,12 +1057,12 @@ h3 { margin: 0; font-stretch: 112%; font-weight: 700; line-height: 1.25; }
 }
 .bc-photo { position: relative; flex: 1; min-width: 0; }
 .bc-photo-img {
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 1 / 0.97;
   overflow: hidden;
   border: 1.5px solid var(--ink);
   background: linear-gradient(180deg, #FF9440, #C9520B);
 }
-.bc-photo-img img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+.bc-photo-img img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 20%; pointer-events: none; }
 .bc-photo-img span {
   height: 100%;
   display: grid;
@@ -1648,6 +1660,8 @@ h3 { margin: 0; font-stretch: 112%; font-weight: 700; line-height: 1.25; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
   .intro { display: none; }
+  .intro-name span, .intro-tag span, .lg-j, .lg-l { opacity: 1; }
+  .lg-hex { stroke-dashoffset: 0; }
   .reveal, .mega.reveal { opacity: 1; transform: none; }
   .caret { animation: none; }
   .btn:active, .tab:active { transform: none; }
