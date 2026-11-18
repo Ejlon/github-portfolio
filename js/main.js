@@ -521,19 +521,62 @@
     update();
   })();
 
-  /* ---------- Intro (once per visit) ---------- */
+  /* ---------- Intro (once per visit) ----------
+     ~3s: glow, JL mark, E-L-O-N, "SOFTWARE DEVELOPER", then the page
+     comes into focus. Click or any key skips straight to the page. */
   (function intro() {
-    var el = $("intro");
+    var el = $("intro"), root = document.documentElement;
     var seen = false;
     try { seen = sessionStorage.getItem("introSeen") === "1"; sessionStorage.setItem("introSeen", "1"); } catch (e) {}
-    if (seen || reduceMotion) { document.documentElement.classList.add("no-intro"); el.classList.add("done"); return; }
+    if (seen || reduceMotion) { root.classList.add("no-intro"); el.classList.add("done"); return; }
+
+    root.classList.add("page-hold");
+    var done = false;
     var finish = function () {
+      if (done) return;
+      done = true;
       el.classList.add("done");
       document.removeEventListener("keydown", finish);
+      root.classList.add("page-reveal");
+      requestAnimationFrame(function () { root.classList.remove("page-hold"); });
+      setTimeout(function () { root.classList.remove("page-reveal"); }, 1600);
     };
     el.addEventListener("click", finish);
     document.addEventListener("keydown", finish);
-    setTimeout(finish, 1700);
+    setTimeout(finish, 3100);
+  })();
+
+  /* ---------- Photo: tilts toward the cursor with a moving glare ---------- */
+  (function photoTilt() {
+    var frame = $("photo-frame"), tilt = $("photo-tilt"), glare = $("photo-glare");
+    if (!frame || !tilt || reduceMotion || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+    var MAX_X = 10, MAX_Y = 12;       // degrees
+    var tx = 0, ty = 0, cx = 0, cy = 0, gx = 50, gy = 30, raf = 0, last = 0, inside = false;
+    var loop = function (t) {
+      var dt = Math.min(0.05, last ? (t - last) / 1000 : 0.016);
+      last = t;
+      var k = 1 - Math.exp(-dt * (inside ? 12 : 7)); // a bit slower settling back
+      cx += (tx - cx) * k; cy += (ty - cy) * k;
+      tilt.style.transform = "rotateX(" + cx.toFixed(2) + "deg) rotateY(" + cy.toFixed(2) + "deg)";
+      glare.style.background = "radial-gradient(circle at " + gx.toFixed(1) + "% " + gy.toFixed(1) + "%, rgba(255, 210, 170, 0.28), transparent 55%)";
+      if (Math.abs(tx - cx) + Math.abs(ty - cy) > 0.01) raf = requestAnimationFrame(loop);
+      else { raf = 0; last = 0; }
+    };
+    var kick = function () { if (!raf) raf = requestAnimationFrame(loop); };
+    frame.addEventListener("pointermove", function (e) {
+      var r = frame.getBoundingClientRect();
+      var px = (e.clientX - r.left) / r.width, py = (e.clientY - r.top) / r.height;
+      tx = (0.5 - py) * 2 * MAX_X;
+      ty = (px - 0.5) * 2 * MAX_Y;
+      gx = px * 100; gy = py * 100;
+      kick();
+    });
+    frame.addEventListener("pointerenter", function () { inside = true; frame.classList.add("tilting"); });
+    frame.addEventListener("pointerleave", function () {
+      inside = false; tx = 0; ty = 0;
+      frame.classList.remove("tilting");
+      kick();
+    });
   })();
 
   /* ---------- Scroll reveals ---------- */

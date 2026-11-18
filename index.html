@@ -36,11 +36,15 @@
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
 
-  <!-- Intro: plays once per visit, click or press any key to skip -->
+  <!-- Intro: plays once per visit; click or press any key to skip -->
   <div class="intro" id="intro" aria-hidden="true">
-    <div class="intro-mark">JL</div>
-    <p class="intro-name">John Elon Labso</p>
-    <div class="intro-bar"><span></span></div>
+    <div class="intro-glow"></div>
+    <div class="intro-stage">
+      <div class="intro-mark"><span>JL</span></div>
+      <p class="intro-name"><span style="--i:0">E</span><span style="--i:1">L</span><span style="--i:2">O</span><span style="--i:3">N</span></p>
+      <p class="intro-tag"><span style="--i:0">S</span><span style="--i:1">O</span><span style="--i:2">F</span><span style="--i:3">T</span><span style="--i:4">W</span><span style="--i:5">A</span><span style="--i:6">R</span><span style="--i:7">E</span><span style="--i:8">&nbsp;</span><span style="--i:9">D</span><span style="--i:10">E</span><span style="--i:11">V</span><span style="--i:12">E</span><span style="--i:13">L</span><span style="--i:14">O</span><span style="--i:15">P</span><span style="--i:16">E</span><span style="--i:17">R</span></p>
+    </div>
+    <p class="intro-skip">Click or press any key to skip</p>
   </div>
 
   <header class="site-header" id="site-header">
@@ -127,10 +131,13 @@
 
         <figure class="photo-frame about-photo" id="photo-frame">
           <div class="photo-glow" aria-hidden="true"></div>
-          <div class="photo-inner" id="hero-photo"></div>
-          <span class="corner tl" aria-hidden="true"></span><span class="corner tr" aria-hidden="true"></span>
-          <span class="corner bl" aria-hidden="true"></span><span class="corner br" aria-hidden="true"></span>
-          <figcaption id="photo-caption"></figcaption>
+          <div class="photo-tilt" id="photo-tilt">
+            <div class="photo-inner" id="hero-photo"></div>
+            <div class="photo-glare" id="photo-glare" aria-hidden="true"></div>
+            <span class="corner tl" aria-hidden="true"></span><span class="corner tr" aria-hidden="true"></span>
+            <span class="corner bl" aria-hidden="true"></span><span class="corner br" aria-hidden="true"></span>
+            <figcaption id="photo-caption"></figcaption>
+          </div>
         </figure>
       </div>
     </section>

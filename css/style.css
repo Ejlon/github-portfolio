@@ -120,67 +120,147 @@ a:hover { text-decoration-thickness: 2px; }
 
 [hidden] { display: none !important; }
 
-/* ---------- Intro ---------- */
+/* ---------- Intro ----------
+   One orchestrated moment: the glow rises, the JL mark comes out of a blur,
+   E-L-O-N rises letter by letter, SOFTWARE DEVELOPER types out, then the
+   whole stage fades and the page comes into focus behind it (main.js).
+   If the script never runs, the CSS alone fades the intro out at 3.8s. */
 
 .intro {
   position: fixed;
   inset: 0;
   z-index: 150;
   display: grid;
-  place-content: center;
-  justify-items: center;
-  gap: 18px;
+  place-items: center;
   background: var(--bg);
-  transition: opacity 0.6s var(--ease-out), visibility 0.6s;
-  animation: intro-out 0.6s 2.4s var(--ease-out) forwards;
+  overflow: hidden;
+  transition: opacity 0.7s var(--ease-out), visibility 0.7s;
+  animation: intro-out 0.7s 3.8s var(--ease-out) forwards;
 }
 @keyframes intro-out { to { opacity: 0; visibility: hidden; } }
 .intro.done { opacity: 0; visibility: hidden; }
 .js-off .intro, .no-intro .intro { display: none; }
 
+.intro-glow {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 900px;
+  height: 900px;
+  margin: -450px 0 0 -450px;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(255, 122, 26, 0.32), rgba(255, 122, 26, 0.08) 45%, transparent 70%);
+  animation: glow-in 1.6s var(--ease-out) both;
+}
+@keyframes glow-in {
+  from { opacity: 0; transform: scale(0.6); }
+  to { opacity: 1; transform: none; }
+}
+
+.intro-stage {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 22px;
+  transition: transform 0.8s var(--ease-out), filter 0.8s var(--ease-out);
+}
+.intro.done .intro-stage { transform: scale(1.06); filter: blur(10px); }
+
 .intro-mark {
-  width: 96px;
-  height: 96px;
+  width: 104px;
+  height: 104px;
   display: grid;
   place-items: center;
-  border-radius: 24px;
+  border-radius: 26px;
   border: 1.5px solid var(--orange);
   color: var(--orange);
-  font-size: 2.25rem;
+  font-size: 2.5rem;
   font-weight: 800;
   font-stretch: 125%;
   letter-spacing: -0.02em;
-  box-shadow: 0 0 40px var(--glow), inset 0 0 24px rgba(255, 122, 26, 0.2);
-  animation: mark-in 0.9s var(--ease-out) both;
-}
-.intro-name {
-  margin: 0;
-  color: var(--text);
-  font-size: 1rem;
-  font-weight: 300;
-  font-stretch: 125%;
-  letter-spacing: 0.4em;
-  text-transform: uppercase;
-  animation: fade-up 0.8s 0.25s var(--ease-out) both;
-}
-.intro-bar {
-  width: 160px;
-  height: 2px;
-  border-radius: 2px;
-  background: var(--line);
-  overflow: hidden;
-}
-.intro-bar span {
-  display: block;
-  height: 100%;
-  background: var(--orange);
-  box-shadow: 0 0 12px var(--orange);
-  transform-origin: left;
-  animation: load 1.3s 0.2s var(--ease-in-out) both;
+  box-shadow: 0 0 50px var(--glow), inset 0 0 28px rgba(255, 122, 26, 0.22);
+  animation: mark-in 1s 0.1s var(--ease-out) both;
 }
 
+.intro-name {
+  margin: 4px 0 0;
+  display: flex;
+  font-size: clamp(3.25rem, 11vw, 6.5rem);
+  font-weight: 300;
+  font-stretch: 125%;
+  line-height: 1;
+  letter-spacing: 0.18em;
+  margin-right: -0.18em; /* keep the spaced word optically centred */
+  color: var(--orange);
+  text-shadow: 0 0 34px rgba(255, 122, 26, 0.55);
+}
+.intro-name span {
+  display: inline-block;
+  animation: letter-in 0.7s calc(0.75s + var(--i) * 90ms) var(--ease-out) both;
+}
+@keyframes letter-in {
+  from { opacity: 0; transform: translateY(40%); filter: blur(10px); }
+  to { opacity: 1; transform: none; filter: none; }
+}
+
+.intro-tag {
+  margin: 0;
+  display: flex;
+  color: var(--text);
+  font-size: clamp(0.75rem, 1.6vw, 0.9375rem);
+  font-weight: 500;
+  font-stretch: 125%;
+  letter-spacing: 0.42em;
+  margin-right: -0.42em;
+  white-space: nowrap;
+}
+.intro-tag span {
+  display: inline-block;
+  animation: type-in 0.2s calc(1.5s + var(--i) * 38ms) steps(1) both;
+}
+@keyframes type-in {
+  from { opacity: 0; }
+  to { opacity: 0.9; }
+}
+
+.intro-skip {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 32px;
+  margin: 0;
+  text-align: center;
+  color: var(--faint);
+  font-size: 0.8125rem;
+  white-space: nowrap;
+  animation: fade-up 0.6s 1.2s var(--ease-out) both;
+}
+
+/* The page comes into focus after the intro (classes set by main.js) */
+.page-hold .site-header,
+.page-hold .hero .board,
+.page-hold .hero-text > * {
+  opacity: 0;
+  filter: blur(14px);
+  transform: translateY(18px);
+}
+.page-reveal .site-header,
+.page-reveal .hero .board,
+.page-reveal .hero-text > * {
+  transition: opacity 0.9s var(--ease-out), filter 0.9s var(--ease-out), transform 0.9s var(--ease-out);
+  transition-delay: calc(var(--d, 0) * 90ms);
+}
+.site-header { --d: 0; }
+.hero .board { --d: 2; }
+.hero-text > :nth-child(1) { --d: 1; }
+.hero-text > :nth-child(2) { --d: 2; }
+.hero-text > :nth-child(3) { --d: 3; }
+.hero-text > :nth-child(4) { --d: 4; }
+.hero-text > :nth-child(5) { --d: 5; }
+.hero-text > :nth-child(6) { --d: 6; }
+
 @keyframes mark-in {
-  from { opacity: 0; transform: scale(0.92); filter: blur(6px); }
+  from { opacity: 0; transform: scale(0.85); filter: blur(12px); }
   to { opacity: 1; transform: none; filter: none; }
 }
 @keyframes fade-up {
@@ -517,6 +597,31 @@ a:hover { text-decoration-thickness: 2px; }
   background: radial-gradient(closest-side, rgba(255, 122, 26, 0.45), transparent);
   filter: blur(30px);
 }
+/* Tilt: the frame gives perspective, .photo-tilt is rotated by main.js */
+.photo-frame { perspective: 900px; }
+.photo-tilt {
+  position: relative;
+  height: 100%;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+.photo-tilt .corner { transform: translateZ(30px); }
+.photo-frame .photo-tilt figcaption { transform: translate(-50%, 0) translateZ(50px); }
+.photo-glare {
+  position: absolute;
+  inset: 0;
+  border-radius: 28px;
+  pointer-events: none;
+  opacity: 0;
+  mix-blend-mode: screen;
+  transition: opacity 0.3s ease;
+}
+.photo-frame.tilting .photo-glare { opacity: 1; }
+.photo-inner img { transition: transform 0.6s var(--ease-out); }
+.photo-frame.tilting .photo-inner img { transform: scale(1.04); }
+.photo-frame.tilting .photo-glow { opacity: 1.0; filter: blur(36px); }
+.photo-glow { transition: filter 0.4s ease; }
+
 .photo-inner {
   position: relative;
   height: 100%;
