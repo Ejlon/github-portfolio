@@ -15,10 +15,11 @@ window.PORTFOLIO = {
   name: "John Elon C. Labso",
   heroName: "John Elon Labso", // the big name at the top (last word drops to line 2)
   shortName: "Elon", // shown on the badge
-  lanyardText: "elon", // printed along the lanyard strap
+  lanyardText: "JOHN ELON LABSO  •", // printed along the lanyard strap
   initials: "JL", // shown on the badge when there's no photo
   photo: "assets/img/elon.jpg", // e.g. "assets/img/elon.jpg" (square photo works best)
-  portrait: "assets/img/elon-portrait.jpg", // tall photo for the hero frame (4:5)
+  portrait: "assets/img/elon-about.jpg", // tall photo for the About frame (4:5)
+  badgePhoto: "assets/img/elon-badge.jpg", // photo printed on the hanging ID (4:5)
   roles: ["Software Developer", "UI Designer"],
   // the hero types these out one after another
   typedRoles: ["Software Developer", "UI Designer", "Full-Stack Web Developer", "iOS Developer"],

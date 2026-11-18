@@ -109,25 +109,12 @@
     }
 
     // Badge
-    $("badge").setAttribute("aria-label", "ID badge for " + D.shortName + ", " + D.roles.join(" and ") + ". Press Enter to swing it.");
-    $("badge-photo").innerHTML = has(D.photo)
-      ? '<img src="' + esc(D.photo) + '" alt="" draggable="false">'
+    $("badge").setAttribute("aria-label", "ID badge for " + D.name + ", " + D.roles.join(" and ") + ". Drag it, or press Enter to swing it.");
+    var badgePic = has(D.badgePhoto) ? D.badgePhoto : D.photo;
+    $("badge-photo").innerHTML = has(badgePic)
+      ? '<img src="' + esc(badgePic) + '" alt="" width="520" height="650" draggable="false">'
       : "<span>" + esc(D.initials) + "</span>";
-    $("badge-name").textContent = D.shortName;
     $("badge-full").textContent = D.name;
-    $("badge-role").innerHTML = D.roles.map(esc).join("<br>");
-    $("badge-loc").textContent = D.badgeLocation || "";
-
-    // Decorative barcode, generated from the email so it's always the same
-    var bars = "", x = 0, seed = 0, i;
-    for (i = 0; i < D.email.length; i++) seed = (seed * 31 + D.email.charCodeAt(i)) >>> 0;
-    while (x < 118) {
-      seed = (seed * 1103515245 + 12345) >>> 0;
-      var w = 1 + (seed >>> 16) % 3;
-      bars += '<rect x="' + x + '" y="0" width="' + w + '" height="32" fill="#E9E1D8"/>';
-      x += w + 1 + ((seed >>> 8) % 2);
-    }
-    $("badge-barcode").innerHTML = bars;
 
     // Lanyard print
     var t = has(D.lanyardText) ? D.lanyardText : D.shortName.toLowerCase();
@@ -645,8 +632,10 @@
   })();
 
   /* =======================================================================
-     Lanyard badge: a rope of points (Verlet integration) hanging from a
-     pegboard hook, with the badge as a rigid stick on the end.
+     Lanyard badge: a rope of points (Verlet integration) hanging from the
+     top of the page, with the badge as a heavy rigid stick on the end.
+     On first show it drops in: falls, the strap snaps tight, it bounces
+     and swings to rest. The card turns a little in 3D as it swings.
      ======================================================================= */
   (function lanyard() {
     var board = $("board"), badge = $("badge"), hint = $("board-hint"), hookG = $("hook");
@@ -683,21 +672,28 @@
       H = board.clientHeight;
       bw = badge.offsetWidth;
       bh = badge.offsetHeight;
-      var holeX = Math.round(W / 2 / 30) * 30 - 7; // a pegboard hole near the middle
-      if (holeX + 7 < W / 2 - 20) holeX += 30;
-      drawHook(holeX);
-      anchor = { x: holeX + 7, y: 57 };
+      hookG.innerHTML = "";
+      anchor = { x: Math.round(W / 2), y: -16 }; // above the top edge: the strap comes from off-page
 
-      var ropeLen = clamp(H - anchor.y - bh - 64, 56, 260);
+      var ropeLen = clamp(H * 0.55 - bh * 0.45, 160, 420); // at least enough to clear the menu
       segLen = ropeLen / SEG;
-      var a = swing ? 0.5 : 0;
-      var sx = Math.sin(a), sy = Math.cos(a);
       pts = [];
-      for (var i = 0; i <= SEG; i++) {
-        pts.push(P(anchor.x + sx * segLen * i, anchor.y + sy * segLen * i, i === 0 ? 0 : (i === SEG ? 0.4 : 1)));
+      var i;
+      if (swing) {
+        // drop-in: the strap starts bunched up near the top and the badge is
+        // held high and tilted, so gravity pulls it down until the strap is taut
+        for (i = 0; i <= SEG; i++) {
+          pts.push(P(anchor.x + Math.sin(i * 1.4) * 10 * (i / SEG), anchor.y + segLen * i * 0.18, i === 0 ? 0 : (i === SEG ? 0.35 : 1)));
+        }
+        var A0 = pts[SEG], tilt = 0.35;
+        B = P(A0.x + Math.sin(tilt) * bh, A0.y + Math.cos(tilt) * bh, 0.35);
+      } else {
+        for (i = 0; i <= SEG; i++) {
+          pts.push(P(anchor.x, anchor.y + segLen * i, i === 0 ? 0 : (i === SEG ? 0.35 : 1)));
+        }
+        var A1 = pts[SEG];
+        B = P(A1.x, A1.y + bh, 0.35);
       }
-      var A = pts[SEG];
-      B = P(A.x + sx * bh, A.y + sy * bh, 0.4);
       built = true;
     }
 
@@ -743,10 +739,13 @@
       }
     }
 
+    var turn = 0; // 3D turn of the card, follows its sideways speed
     function render() {
       var A = pts[SEG];
       var ang = Math.atan2(B.x - A.x, B.y - A.y);
-      badge.style.transform = "translate3d(" + (A.x - bw / 2).toFixed(2) + "px," + A.y.toFixed(2) + "px,0) rotate(" + (-ang).toFixed(4) + "rad)";
+      var vx = (B.x - B.px) + (A.x - A.px) * 0.5;
+      turn += (clamp(-vx * 6, -32, 32) - turn) * 0.15;
+      badge.style.transform = "translate3d(" + (A.x - bw / 2).toFixed(2) + "px," + A.y.toFixed(2) + "px,0) rotate(" + (-ang).toFixed(4) + "rad) rotateY(" + turn.toFixed(2) + "deg)";
 
       var f = function (n) { return n.toFixed(1); };
       var d = "M" + f(anchor.x) + " " + f(anchor.y - 12) + " L" + f(pts[0].x) + " " + f(pts[0].y);
@@ -867,13 +866,22 @@
       badge.classList.add("ready");
       wake();
     }
+    // wait until the intro has handed over to the page, so the drop is seen
+    var startWhenShown = function () {
+      var root = document.documentElement;
+      if (!root.classList.contains("page-hold")) { start(); return; }
+      var mo = new MutationObserver(function () {
+        if (!root.classList.contains("page-hold")) { mo.disconnect(); setTimeout(start, 200); }
+      });
+      mo.observe(root, { attributes: true, attributeFilter: ["class"] });
+    };
 
     var fontsReady = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
     var img = badge.querySelector("img");
     var imgReady = img && !img.complete
       ? new Promise(function (res) { img.addEventListener("load", res); img.addEventListener("error", res); })
       : Promise.resolve();
-    Promise.all([fontsReady, imgReady]).then(start);
-    setTimeout(start, 1500); // never wait forever on a slow font
+    Promise.all([fontsReady, imgReady]).then(startWhenShown);
+    setTimeout(startWhenShown, 1500); // never wait forever on a slow font
   })();
 })();
