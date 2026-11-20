@@ -93,8 +93,13 @@
     if (reduceMotion) {
       typed.textContent = roles[0];
     } else {
-      var r = 0, c = 0, del = false;
+      var r = 0, c = 0, del = false, onScreen = true;
+      if ("IntersectionObserver" in window) {
+        new IntersectionObserver(function (en) { onScreen = en[0].isIntersecting; }).observe(typed);
+      }
       var tick = function () {
+        // don't keep re-laying text the visitor can't see
+        if (document.hidden || !onScreen) { setTimeout(tick, 400); return; }
         var word = roles[r];
         c += del ? -1 : 1;
         typed.textContent = word.slice(0, c);
@@ -116,7 +121,8 @@
 
     // Lanyard print
     var t = has(D.lanyardText) ? D.lanyardText : D.shortName.toLowerCase();
-    $("strap-text").textContent = new Array(40).join(t + "  ");
+    // just enough repeats to cover the longest strap (text along a moving path is re-laid every frame)
+    $("strap-text").textContent = new Array(Math.ceil(1100 / ((t.length + 2) * 7.5)) + 1).join(t + "  ");
   })();
 
   /* ---------- About ---------- */
@@ -669,7 +675,8 @@
     var SEG = 12;           // rope segments
     var STEP = 1 / 120;     // physics timestep (s)
     var GRAV = 2400;        // px/s²
-    var ITER = 14;          // constraint passes per step
+    var coarse = window.matchMedia("(pointer: coarse)").matches;
+    var ITER = coarse ? 9 : 14; // constraint passes per step (fewer on phones, still stable)
     var MAXV = 45;          // max px moved per step
 
     var W = 0, H = 0, bw = 0, bh = 0, segLen = 0;
@@ -855,6 +862,11 @@
       nudgeDir *= -1;
       hint.classList.add("hide");
       wake();
+    });
+
+    // Pause when the tab is hidden
+    document.addEventListener("visibilitychange", function () {
+      if (document.hidden) running = false; else wake();
     });
 
     // Pause when off screen
