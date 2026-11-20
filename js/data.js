@@ -50,19 +50,8 @@ window.PORTFOLIO = {
      live: add a link to show a "Live site" button. */
   projects: [
     {
-      type: "Full-stack web app",
-      period: "Ongoing",
-      title: "TindaTrack",
-      subtitle: "Multi-Branch Inventory & POS System",
-      description:
-        "Tracks stock and sales for a grocery business across its warehouse and branches, with dashboards for sales and profit.",
-      tech: ["React.js", "Node.js", "Express.js", "MySQL"],
-      live: "",
-      github: "https://github.com/Ejlon/tindatrack",
-    },
-    {
       type: "Capstone thesis",
-      period: "February 2026 – Present",
+      period: "February 2026 – November 2026",
       title: "WEVA",
       subtitle: "Behavioral Threat Detection for Student Information Systems",
       description:
@@ -73,7 +62,18 @@ window.PORTFOLIO = {
       github: "https://github.com/KEMMM67/Thesis-repo",
     },
     {
-      type: "iOS app",
+      type: "Personal project",
+      period: "Ongoing",
+      title: "TindaTrack",
+      subtitle: "Multi-Branch Inventory & POS System",
+      description:
+        "Tracks stock and sales for a grocery business across its warehouse and branches, with dashboards for sales and profit.",
+      tech: ["React.js", "Node.js", "Express.js", "MySQL"],
+      live: "",
+      github: "https://github.com/Ejlon/tindatrack",
+    },
+    {
+      type: "Personal project",
       period: "November 2025",
       title: "ExpenSave",
       subtitle: "Budget Tracker App",
@@ -94,7 +94,7 @@ window.PORTFOLIO = {
   /* ---------- Education ---------- */
   education: [
     {
-      years: "2023 – Present",
+      years: "2023 – 2027 (Expected)",
       title: "Bachelor of Science in Computer Science, Specialization in Software Engineering",
       school: "Manuel S. Enverga University Foundation",
       detail: "College of Computing and Multimedia Studies",

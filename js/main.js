@@ -381,6 +381,7 @@
   })();
 
   $("footer-name").textContent = "© " + new Date().getFullYear() + " " + D.name;
+  $("footer-socials").innerHTML = $("hero-socials").innerHTML; // same GitHub / LinkedIn / Email icons
 
   /* ---------- Header + mobile menu ---------- */
   (function nav() {
