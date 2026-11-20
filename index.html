@@ -75,7 +75,6 @@
         <li data-for="achievements"><a href="#achievements">Achievements</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
-      <a class="btn btn-primary btn-sm nav-cta" id="nav-cta" href="#contact">Hire me</a>
     </nav>
   </header>
 
@@ -233,6 +232,24 @@
       <ul class="contact-list" id="contact-list"></ul>
     </section>
   </main>
+
+  <!-- Resume viewer (opened by the "Resume" button) -->
+  <dialog class="viewer resume-viewer" id="resume-viewer" aria-labelledby="resume-title">
+    <div class="viewer-head">
+      <p class="viewer-title" id="resume-title">Resume</p>
+      <button class="viewer-close" id="resume-close" type="button" aria-label="Close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <div class="resume-frame"><iframe id="resume-frame" title="Resume preview"></iframe></div>
+    <div class="viewer-foot">
+      <span>PDF &middot; 1 page</span>
+      <div class="resume-actions">
+        <a class="btn btn-ghost btn-sm" id="resume-open" target="_blank" rel="noopener noreferrer">Open in new tab</a>
+        <a class="btn btn-primary btn-sm" id="resume-download" download>Download Resume</a>
+      </div>
+    </div>
+  </dialog>
 
   <!-- Certificate viewer (opened by the "View" buttons) -->
   <dialog class="viewer" id="cert-viewer" aria-labelledby="viewer-title">

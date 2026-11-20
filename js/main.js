@@ -68,13 +68,12 @@
     $("hero-role-static").textContent = D.roles.join(" and ");
     $("hero-lede").textContent = D.hero;
 
-    var actions = trailBtn("btn-primary", "mailto:" + D.email, "Email me", "mail") +
+    var actions = trailBtn("btn-primary", "#contact", "Contact Me", "mail") +
       trailBtn("btn-ghost", "#portfolio", "View projects", "next", ' data-pf-tab="pf-tab-projects"');
-    if (has(D.resume)) actions += trailBtn("btn-ghost", D.resume, "Resume", "file", " download");
+    if (has(D.resume)) actions += trailBtn("btn-ghost", D.resume, "Resume", "file", " data-resume");
     $("hero-actions").innerHTML = actions;
     $("hero-loc").innerHTML = icon("pin") + "<span>" + esc(D.location) + "</span>";
     $("wordmark").textContent = D.shortName;
-    $("nav-cta").href = "mailto:" + D.email;
 
     // Photo in the glowing frame
     var portrait = has(D.portrait) ? D.portrait : D.photo;
@@ -438,6 +437,31 @@
         else if (e.key === "End") to = n - 1;
         if (to !== null) { e.preventDefault(); select(to, true); }
       });
+    });
+  })();
+
+  /* ---------- Resume popup: preview with Download / Open in new tab ---------- */
+  (function resumeViewer() {
+    var dlg = $("resume-viewer");
+    if (!has(D.resume) || !dlg || typeof dlg.showModal !== "function") return; // old browsers: the link just opens the PDF
+    var frame = $("resume-frame"), opener = null;
+    $("resume-title").textContent = "Resume \u2014 " + D.name;
+    $("resume-download").href = D.resume;
+    $("resume-open").href = D.resume;
+    document.addEventListener("click", function (e) {
+      var a = e.target.closest && e.target.closest("[data-resume]");
+      if (!a) return;
+      e.preventDefault();
+      opener = a;
+      if (!frame.getAttribute("src")) frame.src = D.resume + "#view=FitH&navpanes=0";
+      dlg.showModal();
+      document.documentElement.classList.add("viewer-open");
+    });
+    $("resume-close").addEventListener("click", function () { dlg.close(); });
+    dlg.addEventListener("click", function (e) { if (e.target === dlg) dlg.close(); });
+    dlg.addEventListener("close", function () {
+      document.documentElement.classList.remove("viewer-open");
+      if (opener) opener.focus();
     });
   })();
 

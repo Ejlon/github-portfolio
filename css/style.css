@@ -402,6 +402,12 @@ a:hover { text-decoration-thickness: 2px; }
   margin: 0 0 0 auto;
   padding: 0;
 }
+/* desktop: the bar hugs its content, links sit right next to the name */
+@media (min-width: 981px) {
+  .nav { width: fit-content; gap: 6px; padding: 7px 8px 7px 9px; }
+  .logo { padding-right: 14px; margin-right: 4px; border-right: 1px solid var(--line-hi); }
+  .nav-links { margin: 0; }
+}
 .nav-links a {
   display: block;
   padding: 8px 12px;
@@ -470,10 +476,6 @@ a:hover { text-decoration-thickness: 2px; }
     background: var(--orange);
     box-shadow: 0 0 8px var(--orange);
   }
-}
-
-@media (max-width: 420px) {
-  .nav .nav-cta { display: none; }
 }
 
 /* ---------- Buttons ---------- */
@@ -1497,6 +1499,17 @@ h3 { margin: 0; font-stretch: 112%; font-weight: 700; line-height: 1.25; }
 .viewer img { display: block; width: 100%; height: auto; max-height: calc(100vh - 170px); object-fit: contain; background: #fff; }
 .viewer-foot span { color: var(--muted); font-size: 0.9375rem; }
 .viewer-open { overflow: hidden; }
+
+/* Resume popup */
+.resume-viewer { width: min(860px, calc(100vw - 32px)); }
+.resume-frame { background: #fff; }
+.resume-frame iframe { display: block; width: 100%; height: min(72vh, 1000px); border: 0; }
+.resume-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+@media (max-width: 520px) {
+  .resume-viewer .viewer-foot { flex-direction: column; align-items: stretch; }
+  .resume-actions { flex-direction: column-reverse; }
+  .resume-actions .btn { width: 100%; white-space: nowrap; }
+}
 .viewer-open .cursor-dot, .viewer-open .cursor-ring { opacity: 0 !important; }
 .viewer-open.has-cursor, .viewer-open.has-cursor * { cursor: auto !important; }
 .viewer-open.has-cursor .viewer-close, .viewer-open.has-cursor .viewer a { cursor: pointer !important; }
