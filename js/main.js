@@ -80,7 +80,6 @@
     $("hero-photo").innerHTML = has(portrait)
       ? '<img src="' + esc(portrait) + '" alt="Photo of ' + esc(D.name) + '" width="800" height="1000" loading="lazy">'
       : "<span>" + esc(D.initials) + "</span>";
-    $("photo-caption").textContent = D.roles[0];
 
     // Social icons
     $("hero-socials").innerHTML = (D.socials || []).map(function (s) {
@@ -574,7 +573,7 @@
   (function reveal() {
     if (reduceMotion || !("IntersectionObserver" in window)) return;
     var groups = [
-      ".section-head .kicker", ".section-head .mega", ".about-grid > *", ".stat", ".project-card",
+      ".section-head .mega", ".about-grid > *", ".stat", ".project-card",
       ".skill-card", ".timeline li", ".cert-card", ".finale > *"
     ];
     var els = document.querySelectorAll(groups.join(","));

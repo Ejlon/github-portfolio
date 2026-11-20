@@ -1614,7 +1614,7 @@ h3 { margin: 0; font-stretch: 112%; font-weight: 700; line-height: 1.25; }
   .finale-title .outline { color: var(--orange); }
 }
 
-.contact-lede { margin: 0 auto 14px; font-size: 1.125rem; max-width: 46ch; color: var(--muted); }
+.contact-lede { margin: 0 auto clamp(28px, 4vw, 40px); font-size: 1.125rem; max-width: 46ch; color: var(--muted); }
 .contact-email {
   display: inline-block;
   margin: 0 0 28px;
